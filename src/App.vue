@@ -7,6 +7,11 @@
 <script>
 export default {
   name: 'App'
+  // data() {
+  //   return {
+  //     reload: true
+  //   }
+  // }
 }
 </script>
 
@@ -24,4 +29,19 @@ html,body{
 #app {
   .size;
 }
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+.tbHBtn{
+  margin: 0 10px;
+}
+</style>
+<style type="text/css">
+  .totalfr .ivu-page-total{
+    float: right;
+    margin-top: 12px;
+    margin-right: 16px;
+  }
 </style>

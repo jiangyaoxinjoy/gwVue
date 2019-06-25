@@ -1,5 +1,12 @@
 <template>
   <Form ref="loginForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
+    <FormItem prop="companyRules">
+      <Input v-model="form.company" placeholder="请输入公司名称">
+        <span slot="prepend">
+          <Icon :size="16" type="ios-person"></Icon>
+        </span>
+      </Input>
+    </FormItem>
     <FormItem prop="userName">
       <Input v-model="form.userName" placeholder="请输入用户名">
         <span slot="prepend">
@@ -38,12 +45,21 @@ export default {
           { required: true, message: '密码不能为空', trigger: 'blur' }
         ]
       }
+    },
+    companyRules: {
+      type: Array,
+      default: () => {
+        return [
+          { required: true, message: '公司名称不能为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   data () {
     return {
       form: {
-        userName: 'super_admin',
+        company: '',
+        userName: '',
         password: ''
       }
     }
@@ -52,7 +68,8 @@ export default {
     rules () {
       return {
         userName: this.userNameRules,
-        password: this.passwordRules
+        password: this.passwordRules,
+        company: this.companyRules
       }
     }
   },
@@ -60,10 +77,12 @@ export default {
     handleSubmit () {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.$emit('on-success-valid', {
+          var data = {
             userName: this.form.userName,
-            password: this.form.password
-          })
+            password: this.form.password,
+            company: this.form.company
+          }
+          this.$emit('on-success-valid', data)
         }
       })
     }

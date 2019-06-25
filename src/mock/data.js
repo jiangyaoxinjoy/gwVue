@@ -2,6 +2,14 @@ import Mock from 'mockjs'
 import { doCustomTimes } from '@/libs/util'
 import orgData from './data/org-data'
 import { treeData } from './data/tree-select'
+import { alarmData } from './data/alarm.js'
+import { alarmInfo } from './data//alarmInfo.js'
+import { openData } from './data/open.js'
+import { pressureHistory } from './data/pressure-history.js'
+import { results } from './data/results.js'
+import { alarmHistory } from './data/alarmHistory.js'
+import { alarmDetailTel } from './data/alarmDetailTel.js'
+import { alarmDetail } from './data/alarmDetail.js'
 const Random = Mock.Random
 
 export const getTableData = req => {
@@ -38,3 +46,25 @@ export const getOrgData = req => {
 export const getTreeSelectData = req => {
   return treeData
 }
+
+export const getTreeAlarmData = req => alarmData
+
+export const getAlarmInfo = req => alarmInfo
+
+export const getOpenData = req => openData
+
+export const getPressureHistory = req => pressureHistory
+
+// export const getResults = req => results
+
+export const getResults = req => {
+  let resultList = {}
+  doCustomTimes(5, () => {
+    resultList = results
+  })
+  return resultList
+}
+
+export const getAlarmTrace = req => alarmHistory
+
+export const getAlarmDetail = req => { detail: alarmDetail; tel: alarmDetailTel }

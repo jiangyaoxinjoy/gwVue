@@ -25,7 +25,8 @@ const messages = {
   'en-US': Object.assign(enUsLocale, customEnUs)
 }
 const i18n = new VueI18n({
-  locale: lang,
+  locale: 'zh',
+  // locale: lang,
   messages
 })
 

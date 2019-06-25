@@ -1,10 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import createLogger from 'vuex/dist/logger'
 import user from './module/user'
-import app from './module/app'
+import device from './module/device.js'
+import alert from './module/alert.js'
+// import app from './module/app'
 
 Vue.use(Vuex)
+
+const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
   state: {
@@ -18,6 +22,9 @@ export default new Vuex.Store({
   },
   modules: {
     user,
-    app
-  }
+    device,
+    alert
+    // app
+  },
+  plugins: debug ? [createLogger()] : []
 })

@@ -2,26 +2,34 @@
   <div class="user-avatar-dropdown">
     <Dropdown @on-click="handleClick">
       <Badge :dot="!!messageUnreadCount">
-        <Avatar :src="userAvatar"/>
+        <Button type="primary" shape="circle" size="small">{{userName}}</Button>
       </Badge>
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
-        <DropdownItem name="message">
-          消息中心<Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge>
-        </DropdownItem>
+        <DropdownItem name="changePsd">修改密码</DropdownItem>
         <DropdownItem name="logout">退出登录</DropdownItem>
       </DropdownMenu>
     </Dropdown>
+    <p-modal :modal="modal"  @changeModalState="changeModal"></p-modal>
   </div>
 </template>
 
 <script>
 import './user.less'
 import { mapActions } from 'vuex'
+import PModal from '@/view/show/components/login-out/login-out.vue'
 export default {
   name: 'User',
+  components: {
+    PModal
+  },
+  data () {
+    return {
+      modal: false
+    }
+  },
   props: {
-    userAvatar: {
+    userName: {
       type: String,
       default: ''
     },
@@ -41,18 +49,19 @@ export default {
         })
       })
     },
-    message () {
-      this.$router.push({
-        name: 'message_page'
-      })
-    },
     handleClick (name) {
       switch (name) {
         case 'logout': this.logout()
           break
-        case 'message': this.message()
+        case 'changePsd': this.showModal()
           break
       }
+    },
+    showModal () {
+      this.modal = true
+    },
+    changeModal (val) {
+      this.modal = val
     }
   }
 }

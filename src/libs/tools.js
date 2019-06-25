@@ -213,3 +213,13 @@ export const objEqual = (obj1, obj2) => {
   /* eslint-disable-next-line */
   else return !keysArr1.some(key => obj1[key] != obj2[key])
 }
+
+export const getClientHeight = () => {
+  var clientHeight = 0
+  if (document.body.clientHeight && document.documentElement.clientHeight) {
+    clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight
+  } else {
+    clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight
+  }
+  return clientHeight
+}

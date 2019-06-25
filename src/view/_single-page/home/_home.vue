@@ -1,6 +1,14 @@
 <template>
   <div>
-    <Row :gutter="20">
+    <Split v-model="split1">
+            <div slot="left" class="demo-split-pane">
+                Left Pane
+            </div>
+            <div slot="right" class="demo-split-pane">
+                Right Pane
+            </div>
+        </Split>
+    <!-- <Row :gutter="20">
       <i-col :xs="12" :md="8" :lg="4" v-for="(infor, i) in inforCardData" :key="`infor-${i}`" style="height: 120px;padding-bottom: 10px;">
         <infor-card shadow :color="infor.color" :icon="infor.icon" :icon-size="36">
           <count-to :end="infor.count" count-class="count-style"/>
@@ -24,7 +32,7 @@
       <Card shadow>
         <example style="height: 310px;"/>
       </Card>
-    </Row>
+    </Row> -->
   </div>
 </template>
 
@@ -67,7 +75,8 @@ export default {
         Fri: 24643,
         Sat: 1322,
         Sun: 1324
-      }
+      },
+      split1: 0.5
     }
   },
   mounted () {

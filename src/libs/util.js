@@ -4,7 +4,7 @@ import config from '@/config'
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
 const { title, cookieExpires, useI18n } = config
 
-export const TOKEN_KEY = 'token'
+export const TOKEN_KEY = 'gwxftoken'
 
 export const setToken = (token) => {
   Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 1 })
@@ -155,10 +155,10 @@ export const getNewTagList = (list, newRoute) => {
  * @param {*} access 用户权限数组，如 ['super_admin', 'admin']
  * @param {*} route 路由列表
  */
-const hasAccess = (access, route) => {
-  if (route.meta && route.meta.access) return hasOneOf(access, route.meta.access)
-  else return true
-}
+// const hasAccess = (access, route) => {
+//   if (route.meta && route.meta.access) return hasOneOf(access, route.meta.access)
+//   else return true
+// }
 
 /**
  * 权鉴
@@ -173,7 +173,9 @@ export const canTurnTo = (name, access, routes) => {
       if (item.children && item.children.length) {
         return routePermissionJudge(item.children)
       } else if (item.name === name) {
-        return hasAccess(access, item)
+        return true
+        // 判断权限砍掉
+        // return hasAccess(access, item)
       }
     })
   }
@@ -396,4 +398,32 @@ export const setTitle = (routeItem, vm) => {
   const pageTitle = showTitle(handledRoute, vm)
   const resTitle = pageTitle ? `${title} - ${pageTitle}` : title
   window.document.title = resTitle
+}
+
+// 时间戳格式化11-30 15:28:29
+export const RiQi = (sj) => {
+  var now = new Date(sj * 1000)
+  var month = now.getMonth() + 1
+  var date = now.getDate()
+  var hour = now.getHours()
+  var minute = now.getMinutes()
+  return month + '-' + date + ' ' + hour + ':' + minute
+}
+
+export const RiQiYear = (sj) => {
+  var now = new Date(sj * 1000)
+  var year = now.getFullYear()
+  var month = now.getMonth() + 1
+  var date = now.getDate()
+  var hour = now.getHours()
+  var minute = now.getMinutes()
+  var second = now.getSeconds()
+  return year + '-' + month + '-' + date + ' ' + hour + ':' + minute + ':' + second
+}
+
+export const RiQiTime = (sj) => {
+  var now = new Date(sj)
+  var hour = now.getHours()
+  var minute = now.getMinutes()
+  return hour + ':' + minute
 }

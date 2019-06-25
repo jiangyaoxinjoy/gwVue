@@ -1,6 +1,6 @@
 import Mock from 'mockjs'
 import { login, logout, getUserInfo } from './login'
-import { getTableData, getDragList, uploadImage, getOrgData, getTreeSelectData } from './data'
+import { getTableData, getDragList, uploadImage, getOrgData, getTreeSelectData, getTreeAlarmData, getAlarmInfo, getPressureHistory, getOpenData, getResults, getAlarmTrace, getAlarmDetail } from './data'
 import { getMessageInit, getContentByMsgId, hasRead, removeReaded, restoreTrash, messageCount } from './user'
 
 // 配置Ajax请求延时，可用来测试网络延迟大时项目中一些效果
@@ -24,5 +24,15 @@ Mock.mock(/\/message\/restore/, restoreTrash)
 Mock.mock(/\/message\/count/, messageCount)
 Mock.mock(/\/get_org_data/, getOrgData)
 Mock.mock(/\/get_tree_select_data/, getTreeSelectData)
+
+Mock.mock(/\/get_tree_Alarm_data/, getTreeAlarmData)
+Mock.mock(/\/get_alarm_info/, getAlarmInfo)
+// 阀门打开数据
+Mock.mock(/\/open/, getOpenData)
+// 水压异常数据
+Mock.mock(/\/history/, getPressureHistory)
+Mock.mock(/\/results/, getResults)
+Mock.mock(/\/alarmTrace/, getAlarmTrace)
+Mock.mock(/\/alarmDetail/, getAlarmDetail)
 
 export default Mock
