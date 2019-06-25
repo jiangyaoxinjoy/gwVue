@@ -1,7 +1,7 @@
 <template>
    <!-- :center="{ lng: curMarker.lng, lat: curMarker.lat }" -->
   <baidu-map
-    class="bm-view"  
+    class="bm-view"
     :zoom="zoom"
     @ready="map_handler"
     :scroll-wheel-zoom="true"

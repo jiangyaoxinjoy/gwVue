@@ -47,7 +47,7 @@
        </transition>
     </div>
     <!-- <template v-if="historyModal">
-      
+
     </template> -->
     <indexModal :modalShow="showModal" :deviceId="alarmInfo.deviceId" @hideModal="showModal = false" :alarmType="alarmInfo.alarm_type"></indexModal>
     <Modal

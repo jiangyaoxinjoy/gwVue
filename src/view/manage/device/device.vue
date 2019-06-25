@@ -260,7 +260,7 @@ export default {
           key: 'setuptime',
           minWidth: 170,
           render: (h, params) => {
-            if( params.row.setuptime === '' ) {
+            if (params.row.setuptime === '') {
               return h('span', '')
             } else {
               let time = RiQiYear(params.row.setuptime)
