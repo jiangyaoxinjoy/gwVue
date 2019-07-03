@@ -1,43 +1,54 @@
 <template>
-   <!-- :center="{ lng: curMarker.lng, lat: curMarker.lat }" -->
+   <!-- :center="{ lng: curMarker.lng, lat: Number(curMarker.lat) + 0.005 }" -->
   <baidu-map
-    class="bm-view"
+    ak="QPPRPzUYlpEqGNkyylz2OuTBQCeWVHAd"
+    class="bm-view"  
     :zoom="zoom"
     @ready="map_handler"
     :scroll-wheel-zoom="true"
-    :style="{ 'height': mapHeight+'px', 'width': '100%' }"
+    :style="{ 'height': mapHeight+'px', 'width': '100%' }"   
   >
     <Spin size="large" fix v-if="loading"></Spin>
     <bm-marker :position="curMarker"  @click="infoWindowOpen"></bm-marker>
-    <bm-info-window
-      :show="infoWindowShow"
-      @close="infoWindowClose"
-      :position="curMarker"
-      :height=0
-      :width=0
-      :autoPan="true"
-    >
-      <template v-if="JSON.stringify(alarmInfo) != '{}'">
-        <map-info :alarmInfo="alarmInfo"/>
-      </template>
-    </bm-info-window>
+    <template v-if="hasAlertMarker">
+      <bm-info-window
+        :show="infoWindowShow"
+        @close="infoWindowClose"
+        :position="curMarker"
+        :height="450"
+        :width="450"
+        :autoPan="true"
+      >
+        <!-- <Spin size="large" fix v-if="loadingWin"></Spin> -->
+        <template v-if="JSON.stringify(alarmInfo) != '{}'">
+          <map-info :alarmInfo="alarmInfo"/>
+        </template>
+      </bm-info-window>
+    </template>
   </baidu-map>
 </template>
 <script>
 import mapInfo from './components/mapInfo/mapInfo.vue'
 import { mapState } from 'vuex'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import { BmMarker, BmInfoWindow } from 'vue-baidu-map'
 
 export default {
   name: 'BaiMap',
   components: {
-    mapInfo
+    mapInfo,
+    BaiduMap,
+    BmMarker,
+    BmInfoWindow
   },
   data () {
     return {
       loading: true,
       zoom: 16,
-      infoWindowShow: true,
-      showTels: false
+      infoWindowShow: false,
+      showTels: false,
+      hasAlertMarker: false,
+      // loadingWin: true
     }
   },
   computed: {
@@ -48,25 +59,51 @@ export default {
     })
   },
   watch: {
-    alarmInfo (val) {
-      if (JSON.stringify(val) !== '{}') {
-        this.loading = false
-      }
-    },
+    // alarmInfo (val) {
+    //   if (JSON.stringify(val) !== '{}') {
+    //     setTimeout(() => {
+    //       this.loadingWin = false
+    //     })
+    //   }
+    // },
     curMarker () {
-      // 不延迟切换报警窗口不出现
-      setTimeout(() => {
-        this.infoWindowShow = true
-      }, 200)
+      this.initMap()
     }
   },
   methods: {
     map_handler ({ BMap, map }) {
       this.map = map
-      console.log(222)
-      this.infoWindowOpen()
+      this.BMap = BMap
+      this.initMap() 
+    },
+    initMap(){
+      if (!this.BMap) return false
+      var BMap = this.BMap
+      var map = this.map
+      if (this.curMarker.lng === 0) {
+
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function(r){
+          if(this.getStatus() == BMAP_STATUS_SUCCESS){
+             console.log(r.point.lng)
+            this.curMarker = {lng: r.point.lng, lat: r.point.lat}
+            map.centerAndZoom(new BMap.Point(r.point.lng, r.point.lat), this.zoom)
+          }
+          else {
+            alert('failed'+this.getStatus());
+          }        
+        },{enableHighAccuracy: true})
+        console.log(1111)
+      } else {
+        console.log(2222)
+        this.hasAlertMarker = true
+        setTimeout(() => {
+          this.infoWindowShow = true
+        }, 200)
+        map.centerAndZoom(new BMap.Point(this.curMarker.lng, Number(this.curMarker.lat) + 0.005), this.zoom)
+        
+      }
       this.loading = false
-      map.centerAndZoom(new BMap.Point(this.curMarker.lng, Number(this.curMarker.lat) + 0.006), this.zoom)
     },
     infoWindowClose (e) {
       this.infoWindowShow = false

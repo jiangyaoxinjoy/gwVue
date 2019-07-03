@@ -65,7 +65,7 @@
         <template slot-scope="{ row, index }" slot="action">
           <Button type="info" size="small" @click="show(row)">告警详情</Button>
         </template>
-        <Page class-name='totalfr' slot="footer" :current="alarmParams.pageNum" :page-size="alarmParams.limit" :total="dataTotal" show-total size="small" />
+        <Page @on-change="changePage"  class-name='totalfr' slot="footer" :current="alarmParams.pageNum" :page-size="alarmParams.limit" :total="dataTotal" show-total size="small" />
       </Table>
     </Content>
     <modal :modalShow="modalShow" @hideModal="modalShow = false" :deviceId="modalDeviceId"/>
@@ -99,7 +99,7 @@ export default {
       modalShow: false,
       tableData: [],
       dataTotal: 0,
-      loading: false,
+      loading: true,
       columns: [
         {
           title: '项目名称',

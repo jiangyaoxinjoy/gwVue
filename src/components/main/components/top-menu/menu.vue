@@ -13,7 +13,7 @@
             <!-- <Icon type="ios-paper" /> -->
             报警监控
           </MenuItem>
-          <MenuItem name="status" to="/status">
+          <MenuItem name="statusData" to="/status/data">
             <!-- <Icon type="ios-paper" /> -->
             设备状态
           </MenuItem>

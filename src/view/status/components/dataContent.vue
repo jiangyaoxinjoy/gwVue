@@ -8,7 +8,8 @@
     ref="table">
     <template slot-scope="{ row, index }" slot="state">
       <Tag class="stateTag" v-if="row.state == '70' && row.status != 0" type="dot" color="error">离线</Tag>
-      <Tag class="stateTag" v-if="row.state != '70' && row.status != 0" type="dot" color="success">在线</Tag>
+      <Tag class="stateTag" v-if="row.state == '80' && row.status != 0" type="dot" color="error">故障</Tag>
+      <Tag class="stateTag" v-if="row.state != '70' && row.state != '80' && row.status != 0" type="dot" color="success">在线</Tag>
       <Tag color="default" v-if="row.status == 0">未安装</Tag>
     </template>
     <template slot="signal"  slot-scope="{ row, index }">

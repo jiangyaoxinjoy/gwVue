@@ -2,6 +2,7 @@
 <div>
   <Spin size="large" fix v-if="loading"></Spin>
   <baidu-map
+    ak="QPPRPzUYlpEqGNkyylz2OuTBQCeWVHAd"
     class="bm-view"
     :center="{lng: centerMark.lng, lat: centerMark.lat}"
     :zoom="zoom"
@@ -24,7 +25,7 @@
         v-for="marker of markersData"
         :key="marker.Id"
         @click="showInfo(marker)"
-        :icon="{ url: marker.state == '70' ? '/images/locationE.svg' : '/images/locationP.svg', size: {width: 30, height: 30}}"
+        :icon="{ url: (marker.state == '70' || marker.state == '80') ? '/images/locationE.svg' : '/images/locationP.svg', size: {width: 30, height: 30}}"
         :position="{lng: marker.lng, lat: marker.lat}">
       </bm-marker>
     </bml-marker-clusterer>
@@ -51,18 +52,25 @@
 // import markerIconE from '@/assets/images/locationE.svg'
 // // 蓝色正常图标
 // import markerIconP from '@/assets/images/locationP.svg'
-import { BmlMarkerClusterer } from 'vue-baidu-map'
 import { mapActions, mapGetters, mapState } from 'vuex'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import { BmMarker, BmInfoWindow, BmlMarkerClusterer, BmView } from 'vue-baidu-map'
 
 export default {
   name: 'fullMap',
   components: {
-    BmlMarkerClusterer
+    BmlMarkerClusterer,
+    BaiduMap,
+    BmMarker,
+    BmInfoWindow,
+    BmView
   },
   filters: {
     filterStateText (val) {
       if (val === '70') {
         return '异常'
+      } else if (val === '80') {
+        return '故障'
       } else {
         return '在线'
       }
@@ -106,7 +114,7 @@ export default {
       centerMark: state => state.device.centerMark
     }),
     stateColor () {
-      if (this.infoWindow.state !== '70') {
+      if (this.infoWindow.state !== '70' && this.infoWindow.state !== '80') {
         return 'success'
       } else {
         return 'error'

@@ -9,6 +9,7 @@
 .wrapper-header-nav{
   position: relative;
   text-align: center;
+  background: #091220;
   h1{
     color: #54ffc3;
     display: inline-block;
@@ -90,7 +91,7 @@
     right: 0;
     z-index: 800;
     
-    height: 500px;
+    height: 450px;
     color: #fff;
     width: 300px;  
     overflow-y: auto;
@@ -103,7 +104,63 @@
   }
   .drawer_control{
     position: absolute;
-    bottom: 510px;
+    bottom: 460px;
     right: 0;
   }
+}
+.mapHeader{
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #091220;
+  .badge {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+  }
+}
+.demo-badge{
+  width: 42px;
+  height: 42px;
+  background: #eee;
+  border-radius: 6px;
+  display: inline-block;
+}
+.badge_label{
+  display: block;
+  color: #fff;
+  margin-top: -5px;
+  text-align: center;
+}
+.cherts_header{
+  height: 45px;
+  font-size: 16px;
+  line-height: 45px;
+  color:#fff;
+  font-weight: bold;
+  background: #091220;
+  text-indent: 1.5em;
+  position: relative;
+}
+
+.cherts_header:before{
+  content: "";
+  display:block;
+  position: absolute;
+  left: 5px;
+  top: 13px;
+  height: 18px;
+  width: 3px;
+  background-color: #fff;
+}
+.headerSelect {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  z-index: 1100;
+}
+
+.demo-spin-icon-load{
+  animation: ani-demo-spin 1s linear infinite;
 }

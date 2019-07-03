@@ -57,8 +57,9 @@ export default [
       },
       {
         path: '/status',
-        // name: 'status',
-        name: '_statusData',
+        name: 'status',
+        // name: '_statusData',
+        component: Main,
         redirect: 'status/data',
         // meta: {
         //   title: '设备状态',

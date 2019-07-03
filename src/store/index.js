@@ -4,6 +4,7 @@ import createLogger from 'vuex/dist/logger'
 import user from './module/user'
 import device from './module/device.js'
 import alert from './module/alert.js'
+import show from './module/show.js'
 // import app from './module/app'
 
 Vue.use(Vuex)
@@ -23,7 +24,8 @@ export default new Vuex.Store({
   modules: {
     user,
     device,
-    alert
+    alert,
+    show
     // app
   },
   plugins: debug ? [createLogger()] : []

@@ -149,28 +149,6 @@ export const deviceMapList = (data) => {
   })
 }
 
-// export const exportDeviceList = (data) => {
-//   return axios.request({
-//     url: '/deviceexport',
-//     method: 'post',
-//     data: data
-//     // transformRequest: (data) => {
-//     //   return JSON.stringify(data)
-//     // },
-//     // headers: {
-//     //   'Content-Type': 'application/json'
-//     // },
-//   })
-// }
-
-// export const exportDeviceEvent = (data) => {
-//   return axios.request({
-//     url: '/deviceEventExport',
-//     method: 'post',
-//     data: data
-//   })
-// }
-
 export const deviceStateList = (data) => {
   return axios.request({
     url: '/devicestatelist',
@@ -246,9 +224,6 @@ export const importDevice = (data) => {
     url: '/deviceimport',
     method: 'post',
     data: data
-    // headers: {
-    //   'Content-Type': 'multipart/form-data'
-    // },
   })
 }
 
@@ -364,6 +339,49 @@ export const changePsd = (data) => {
     }
   })
 }
+
+export const getDevicemonitoring = (data) => {
+  return axios.request({
+    url: "devicemonitoring",
+    method: 'post',
+    data: data,
+    transformRequest: (data) => {
+      return JSON.stringify(data)
+    },
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export const getAlertAnalyze = (data) => {
+  return axios.request({
+    url: "alertAnalyze",
+    method: 'post',
+    data: data,
+    transformRequest: (data) => {
+      return JSON.stringify(data)
+    },
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
+export const getShowUnalertDevice = (data) => {
+  return axios.request({
+    url: "showUnalertDevice",
+    method: 'post',
+    data: data,
+    transformRequest: (data) => {
+      return JSON.stringify(data)
+    },
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
 export const logout = (token) => {
   return axios.request({
     url: '/logout',

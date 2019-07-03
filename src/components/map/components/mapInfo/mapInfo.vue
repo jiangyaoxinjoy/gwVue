@@ -1,5 +1,6 @@
 <template>
   <div class="info">
+    <Spin size="large" fix v-if="loading"></Spin>
     <div style="background:#eee;padding: 5px;position: relative;">
       <transition name="fade">
         <Card>
@@ -7,7 +8,7 @@
             <Icons class="card_icon" slot="icon" :size="45" type="shuiyaxiaxian" />
             <p>
               {{alarmInfo.alarm_type | alarmTypeFilter}}
-              <Tag class="tag" type="border">{{ ifReceive}}</Tag>
+              <Tag class="tag" type="border">{{ alarmInfo.isnotify == 0 ? '通知未到达' : '通知已到达'}}</Tag>
               </br> <span class="extra_line">{{alarmText}}</span>
             </p>
           </div>
@@ -98,8 +99,12 @@ export default {
         tel: '',
         value: 1
       },
-      showTels: false
+      showTels: false,
+      loading: false
     }
+  },
+  watch: {
+
   },
   methods: {
     ...mapActions(['getUserNotifyHistory']),
@@ -143,29 +148,29 @@ export default {
       }
       return text
     },
-    ifReceive () {
-      let flag = true
-      if (this.alarmInfo.notify_infos !== 'undefined') {
-        this.alarmInfo.notify_infos.forEach(ele => {
-          if (ele.data === null) {
-            flag = false
-          } else {
-            (function (item) {
-              item.forEach(val => {
-                if (val.state === 0) {
-                  flag = false
-                }
-              })
-            })(ele.data)
-          }
-        })
-        if (!flag) {
-          return '通知未到达'
-        } else {
-          return '通知已到达'
-        }
-      }
-    }
+    // ifReceive () {
+    //   let flag = true
+    //   if (this.alarmInfo.notify_infos !== 'undefined') {
+    //     this.alarmInfo.notify_infos.forEach(ele => {
+    //       if (ele.data === null) {
+    //         flag = false
+    //       } else {
+    //         (function (item) {
+    //           item.forEach(val => {
+    //             if (val.state === 0) {
+    //               flag = false
+    //             }
+    //           })
+    //         })(ele.data)
+    //       }
+    //     })
+    //     if (!flag) {
+    //       return '通知未到达'
+    //     } else {
+    //       return '通知已到达'
+    //     }
+    //   }
+    // }
   },
   filters: {
     stateFilter: function ([time, state]) {

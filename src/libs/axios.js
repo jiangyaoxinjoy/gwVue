@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken } from '@/libs/util'
 // import store from '@/store'
 // import { Spin } from 'iview'
 // const addErrorLog = errorInfo => {
@@ -20,9 +21,7 @@ class HttpRequest {
   getInsideConfig () {
     const config = {
       baseURL: this.baseUrl,
-      withCredentials: false // 允许携带cookie
       // headers: {
-      //   // 'Content-Type': 'application/json'
       // }
     }
     return config
@@ -41,6 +40,7 @@ class HttpRequest {
         // Spin.show() // 不建议开启，因为界面不友好
       }
       this.queue[url] = true
+      config.headers.common['token'] = getToken();
       return config
     }, error => {
       return Promise.reject(error)

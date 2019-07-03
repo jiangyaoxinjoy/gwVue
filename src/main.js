@@ -15,19 +15,22 @@ import '@/assets/icons/iconfont.css'
 import TreeTable from 'tree-table-vue'
 import VOrgTree from 'v-org-tree'
 import 'v-org-tree/dist/v-org-tree.css'
-import BaiduMap from 'vue-baidu-map'
+// import BaiduMap from 'vue-baidu-map'
 import vuescroll from 'vuescroll/dist/vuescroll-native'
 import 'vuescroll/dist/vuescroll.css'
+
+// import mapInfo from '@/view/show/components/windowInfo/info.vue'
+// var MyComponent = Vue.extend(mapInfo)
 
 Vue.use(vuescroll)
 // 实际打包时应该不引入mock
 /* eslint-disable */
 // if (process.env.NODE_ENV !== 'production') require('@/mock')
 
-Vue.use(BaiduMap, {
-  // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
-  ak: 'QPPRPzUYlpEqGNkyylz2OuTBQCeWVHAd'
-})
+// Vue.use(BaiduMap, {
+//   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+//   ak: 'QPPRPzUYlpEqGNkyylz2OuTBQCeWVHAd'
+// })
 
 Vue.use(iView)
 // Vue.use(iView, {
@@ -52,6 +55,10 @@ Vue.prototype.$config = config
  */
 importDirective(Vue)
 Vue.directive('clickOutside', clickOutside)
+
+// import WindowInfo from './view/show/components/windowInfo'
+
+// Vue.use(WindowInfo)
 
 Vue.filter('alarmTypeFilter', function(val) {
   let type = ''

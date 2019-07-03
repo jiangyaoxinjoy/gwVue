@@ -43,7 +43,8 @@ module.exports = {
       '/api': {
         target: 'http://127.0.0.1:8087/', // 后台服务器的ip地址
         pathRewrite: { '^/api': '/' },
-        changeOrigin: true
+        changeOrigin: true,
+        ws: false
       }
     }
   }

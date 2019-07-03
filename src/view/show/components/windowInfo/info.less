@@ -1,8 +1,6 @@
 .info{
   width: 100%;
   height: 450px;
-  // min-width: 400px;
-  // height: 450px;
   overflow-y: auto;
   overflow-x: hidden;
   .notifyModal{
@@ -31,7 +29,7 @@
 .step_wrap{
   margin-top: 20px;
   margin-left: 16px;
-  width: 110%;
+  width: 108%;
   overflow: hidden;
 }
 .ivu-divider-horizontal.ivu-divider-with-text-center, .ivu-divider-horizontal.ivu-divider-with-text-left, .ivu-divider-horizontal.ivu-divider-with-text-right{
@@ -109,7 +107,7 @@
     margin: 10px 0;
   }
   .wrap{
-    margin-left: 8%;
+    margin-left: 4%;
     margin-right: -10%;
   }
   .content{
@@ -117,4 +115,36 @@
     height: 450px;
     overflow-x: hidden;
   }
+}
+.divider_tel{
+  span {
+    float: right;
+  }
+}
+.ivu-cell-footer .ivu-cell-extra{
+  color: #515a6e;
+}
+
+.ivu-modal{
+    margin-left: 50px;
+}
+.showinfo .cell-contact{
+  margin: 3px 0;
+  background-color: #f7f7f7;
+  padding: 6px 16px;
+  .ivu-cell-title {
+    vertical-align: middle;
+  }
+  .ivu-cell-arrow{
+    top: 28%;
+  }
+}
+.cell-arrow{
+  transition: transform .2s ease-in-out,-webkit-transform .2s ease-in-out;
+}
+.cell-arrow.active {
+  transform: rotate(90deg);
+}
+.cell-arrow {
+  transform: rotate(0deg);
 }

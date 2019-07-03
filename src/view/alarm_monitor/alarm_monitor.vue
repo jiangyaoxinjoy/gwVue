@@ -5,12 +5,13 @@
         <index-table />
       </div>
       <div slot="right" class="split-pane">
+        <!-- <BaiMap/> -->
         <template v-if="curMarker.lng !== 0">
           <BaiMap/>
-          <!-- <BaiMap :curMarker="{lng: curMarker.lng, lat: curMarker.lat}"/> -->
         </template>
         <template else>
           <baidu-map
+            ak="QPPRPzUYlpEqGNkyylz2OuTBQCeWVHAd"
             class="bm-view"
             center="上海"
             :zoom="14"
@@ -27,17 +28,18 @@
 <script>
 import BaiMap from '_c/map/'
 import IndexTable from '_c/indexTable'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 
 export default {
   name: 'home',
   components: {
     BaiMap,
-    IndexTable
+    IndexTable,
+    BaiduMap
   },
   data () {
     return {
-      split: 0.5,
-      cHeight: 880
+      split: 0.4
     }
   },
   computed: {

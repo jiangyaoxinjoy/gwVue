@@ -223,3 +223,14 @@ export const getClientHeight = () => {
   }
   return clientHeight
 }
+
+
+export const getClientWidth = () => {
+  var clientWidth = 0
+  if (document.body.clientWidth && document.documentElement.clientWidth) {
+    clientWidth = (document.body.clientWidth < document.documentElement.clientWidth) ? document.body.clientWidth : document.documentElement.clientWidth
+  } else {
+    clientWidth = (document.body.clientWidth > document.documentElement.clientWidth) ? document.body.clientWidth : document.documentElement.clientWidth
+  }
+  return clientWidth
+}
