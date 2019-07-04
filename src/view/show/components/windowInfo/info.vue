@@ -130,7 +130,7 @@
         </div>  
       </div>
     </div>
-
+    <!-- 所有通知 start -->
     <div v-show="notifyModal" data-transfer="true" class="notifyModal v-transfer-dom">
       <div class="ivu-modal-mask" style="z-index: 1015;"></div> 
       <div class="ivu-modal-wrap" style="z-index: 1015;">
@@ -208,7 +208,7 @@
       </div>
     </div>
   </div>
-
+  <!-- 所有通知end -->
 
 </div>
 </template>
@@ -254,14 +254,14 @@ export default {
       console.log(item)
       this.notifyModal = true
       getUserNotifyHistory({ 'token': getToken(), 'device_id': item.data[0].device_id, 'user_id': item.data[0].user_id })
-        .then(res => {
-          console.log(res)
-          if (res.data.status === 0) {
-            this.notifyData.list = res.data.data
-            this.notifyData.name = item.name
-            this.notifyData.tel = item.phone
-          }
-        })
+      .then(res => {
+        console.log(res)
+        if (res.data.status === 0) {
+          this.notifyData.list = res.data.data
+          this.notifyData.name = item.name
+          this.notifyData.tel = item.phone
+        }
+      })
     },
     historyBtnClick () {
       this.showModal = !this.showModal

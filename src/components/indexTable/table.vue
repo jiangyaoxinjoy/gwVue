@@ -97,7 +97,8 @@ export default {
       tableHeight: state => state.user.windowH - 60,
       companyList: state => state.user.companyList,
       comId: state => state.user.comId,
-      curMarker: state => state.alert.curMarker
+      curMarker: state => state.alert.curMarker,
+      curDeviceId: state => state.alert.curDeviceId
     })
   },
   created () {
@@ -131,8 +132,8 @@ export default {
     setMarker (row, index) {
       var curMarker = this.curMarker
       if (curMarker.lat !== row.lat || curMarker.lng !== row.lng) {
-        this.$store.commit('setCurMarker', { lat: row.lat, lng: row.lng })
-        this.$store.dispatch('getDeviceAlertInfo', { device_id: row.device_id })
+        this.$store.commit('setCurMarker', { lat: row.lat, lng: row.lng, device_id: row.device_id })
+        // this.$store.dispatch('getDeviceAlertInfo', { device_id: row.device_id })
       }
     },
     changePage (val) {

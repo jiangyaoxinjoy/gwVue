@@ -1,6 +1,5 @@
 <template>
-   <!-- :center="{ lng: curMarker.lng, lat: Number(curMarker.lat) + 0.005 }" -->
-  <baidu-map
+  <!-- <baidu-map
     ak="QPPRPzUYlpEqGNkyylz2OuTBQCeWVHAd"
     class="bm-view"  
     :zoom="zoom"
@@ -19,13 +18,12 @@
         :width="450"
         :autoPan="true"
       >
-        <!-- <Spin size="large" fix v-if="loadingWin"></Spin> -->
         <template v-if="JSON.stringify(alarmInfo) != '{}'">
           <map-info :alarmInfo="alarmInfo"/>
         </template>
       </bm-info-window>
     </template>
-  </baidu-map>
+  </baidu-map> -->
 </template>
 <script>
 import mapInfo from './components/mapInfo/mapInfo.vue'

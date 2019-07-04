@@ -14,11 +14,13 @@ export default {
       { 'key': '30', title: '撞到' },
       { 'key': '70', title: '设备异常' }
     ],
-    alarmInfo: {}
+    alarmInfo: {},
+    curDeviceId: ""
   },
   mutations: {
     setCurMarker (state, payload) {
-      state.curMarker = payload
+      state.curMarker = {lng: payload.lng, lat: payload.lat}
+      state.curDeviceId = payload.device_id
     },
     setAlarmInfo (state, payload) {
       state.alarmInfo = payload
@@ -32,7 +34,7 @@ export default {
         payload.token = rootState.user.token
         getDeviceAlertInfo(payload).then(res => {
           if (res.data.status === 0) {
-            commit('setAlarmInfo', res.data.data)
+            // commit('setAlarmInfo', res.data.data)
             resolve(res.data.data)
           } else {
             Message.error(res.data.msg)
