@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div id="monitoringMap" class="monitoringMap" :style="{height: mapHeight +'px'}"></div>
+    <div 
+      id="monitoringMap" 
+      class="monitoringMap" 
+      :style="{height: mapHeight +'px'}"></div>
   </div>
 </template>
 
@@ -24,43 +27,50 @@ export default {
     curMarker: {
       handler(val){
         if (JSON.stringify(val) != '{}') {
-          this.setMarker()
+          setTimeout(() => {
+            this.setMarker()
+          },500)
         }
-      }
+      },
+      immediate: true
     }
   },
   mounted() {
-    // 百度地图API功能
-    // 创建Map实例
+    console.log(11111)
     var map = new BMap.Map("monitoringMap");
     this.map = map
     // 初始化地图,设置中心点坐标和地图级别
-    map.centerAndZoom(new BMap.Point(121.472763,31.236552), this.zoom);
+    // map.centerAndZoom(new BMap.Point(121.472763,31.236552), this.zoom);
     // 添加地图类型控件
     // map.addControl(new BMap.MapTypeControl());  
     // 设置地图显示的城市 此项是必须设置的
     map.setCurrentCity("上海");    
     // 开启鼠标滚轮缩放      
     map.enableScrollWheelZoom(true);
-    this.setMarker()
   },
   methods: {
     ...mapActions(['getDeviceAlertInfo']),
     setMarker() {
       var map = this.map
-      map.clearOverlays(); 
+      this.removeMarkerEvent()
+      // map.clearOverlays(); 
       var point = new BMap.Point(this.curMarker.lng, this.curMarker.lat)
+      //让标记点显示在中点偏下的位置
+      var centerPoint = new BMap.Point(this.curMarker.lng, Number(this.curMarker.lat) + 0.007)
       var marker = new BMap.Marker(point)
-      map.centerAndZoom(point, this.zoom);
       map.addOverlay(marker)
-      marker.addEventListener('click', () => {
-        this.markerWindow(point)
-      });
-      this.markerWindow(point)
+      map.centerAndZoom(centerPoint, this.zoom);
+      var opts = {
+          width : 450,     // 信息窗口宽度
+          height: 500,     // 信息窗口高度
+      };
+
+      marker.addEventListener('click', this.markerWindow);
+      this.markerWindow()
     },
-    markerWindow (point) {
+    markerWindow () {
       var map = this.map
-      map.centerAndZoom(point, 20)
+      // map.centerAndZoom(point, this.zoom)
       var opts = {
           width : 450,     // 信息窗口宽度
           height: 500,     // 信息窗口高度
@@ -74,32 +84,28 @@ export default {
             </div>
           </div>
         </div>`;
+      var point = new BMap.Point(this.curMarker.lng, this.curMarker.lat);
       var infoWindow = new BMap.InfoWindow(sContent,opts);
+      this.infoWindow = infoWindow
       map.openInfoWindow(infoWindow,point)
       this.getDeviceAlertInfo({'device_id': this.curDeviceId}).then( res => {
-        this.$windowinfo(res)
+        this.$windowinfo(res, true)
       })
-      // this.$nextTick( () => {
-      //   setTimeout( () => {
-      //     this.$windowinfo(this.curDeviceId)
-      //   })
-      // })
-      // console.log(document.getElementById("test"))  
-      // this.getShowAlertInfo({ "device_id": this.chooseAlert["device_id"]}).then( res => {
-      //   this.alertInfo = res
-        
-      //   var MyComponent = Vue.extend(mapInfo)
-
-      //   var component= new MyComponent({
-      //     propsData: {
-      //       alarmInfo: this.alertInfo
-      //     }
-      //   }).$mount();      
-
-      //   document.getElementById('test').innerHTML = "";
-      //   document.getElementById('test').appendChild(component.$el);
-      // })
     },
+    removeMarkerEvent () {
+      var map = this.map
+      var allOverlay = map.getOverlays();
+      for(var i = 0;i<allOverlay.length;i++) {
+        console.log('removeMarkerEvent')       
+        allOverlay[i].removeEventListener("click", this.markerWindow);
+        map.removeOverlay(allOverlay[i]);
+      }
+    }
   }
 }
 </script>
+<style type="text/css">
+  #monitoringMap .ivu-card-bordered {
+    min-height: 490px;
+  }
+</style>

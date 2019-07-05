@@ -400,6 +400,7 @@ export const setTitle = (routeItem, vm) => {
   window.document.title = resTitle
 }
 
+function add0(m){return m<10?'0'+m:m }
 // 时间戳格式化11-30 15:28:29
 export const RiQi = (sj) => {
   var now = new Date(sj * 1000)
@@ -407,7 +408,7 @@ export const RiQi = (sj) => {
   var date = now.getDate()
   var hour = now.getHours()
   var minute = now.getMinutes()
-  return month + '-' + date + ' ' + hour + ':' + minute
+  return add0(month) + '-' + add0(date) + ' ' + add0(hour) + ':' + add0(minute)
 }
 
 export const RiQiYear = (sj) => {
@@ -418,12 +419,12 @@ export const RiQiYear = (sj) => {
   var hour = now.getHours()
   var minute = now.getMinutes()
   var second = now.getSeconds()
-  return year + '-' + month + '-' + date + ' ' + hour + ':' + minute + ':' + second
+  return year + '-' + add0(month) + '-' + add0(date) + ' ' + add0(hour) + ':' + add0(minute) + ':' + add0(second)
 }
 
 export const RiQiTime = (sj) => {
   var now = new Date(sj)
   var hour = now.getHours()
   var minute = now.getMinutes()
-  return hour + ':' + minute
+  return add0(hour) + ':' + add0(minute)
 }

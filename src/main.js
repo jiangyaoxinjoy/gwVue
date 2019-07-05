@@ -19,7 +19,7 @@ import 'v-org-tree/dist/v-org-tree.css'
 import vuescroll from 'vuescroll/dist/vuescroll-native'
 import 'vuescroll/dist/vuescroll.css'
 
-import registryWindowInfo from '@/view/alarm_monitor/components/windowInfo.js'
+import registryWindowInfo from '_c/windowInfo/index.js'
 Vue.use(registryWindowInfo)
 // import mapInfo from '@/view/show/components/windowInfo/info.vue'
 // var MyComponent = Vue.extend(mapInfo)

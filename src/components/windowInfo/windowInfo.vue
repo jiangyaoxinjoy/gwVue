@@ -1,6 +1,8 @@
 <template>
   <div class="info">
-    <NotifyModal :notifyModal="notifyModal" :notifyData="notifyData" @stateChange="notifyModalChange"/>
+    <NotifyModal :notifyModal="notifyModal" :userAllNotify="userAllNotify" @stateChange="notifyModalChange"/>
+
+    <IndexHistoryModal v-if="history" :modalShow="historyModal" :deviceId="alarmInfo.deviceId" @hideModal="historyModal = false" :alarmType="alarmInfo.alarm_type"/>
 
     <div style="background: rgb(238, 238, 238); padding: 5px; position: relative;">
       <div class="ivu-card ivu-card-bordered">
@@ -14,7 +16,8 @@
                   {{ alarmInfo.isnotify == 0 ? '通知未到达' : '通知已到达'}}
                 </span> 
               </div>
-              <br><span class="extra_line">{{alarmText}}</span>
+              <br>
+              <span class="extra_line">{{alarmText}}</span>
             </div>
           </div>
         </div> 
@@ -26,17 +29,15 @@
             <span class="ivu-divider-inner-text">地址</span>
           </div>
           <p>{{alarmInfo.address}}</p>
-
           <div class="ivu-cell cell-contact" @click="showcell">
-          <!-- <a href="/components/button" target="_blank" class="ivu-cell-link"> -->
             <div class="ivu-cell-item">
-              <div class="ivu-cell-icon"></div> 
+             <!--  <div class="ivu-cell-icon"></div>  -->
               <div class="ivu-cell-main">
                 <div class="ivu-cell-title">联系人和联系方式</div> 
               </div> 
-              <div class="ivu-cell-footer">
+             <!--  <div class="ivu-cell-footer">
                 <span class="ivu-cell-extra"></span>
-              </div>
+              </div> -->
             </div>
           <!-- </a>  -->
             <div class="ivu-cell-arrow cell-arrow" :class="hidecell ? 'active' : ''">
@@ -58,9 +59,12 @@
               </div> 
             </div>
           </div>
-          <button type="button" class="history_btn ivu-btn ivu-btn-warning ivu-btn-long">
+          <button 
+          v-if="(alarmInfo.alarm_type == '10' || alarmInfo.alarm_type == '20') && history" type="button" 
+          @click="historyBtnClick" 
+          class="history_btn ivu-btn ivu-btn-warning ivu-btn-long">
             <span>
-              {{showModal ? '关闭' : '显示'}}{{alarmInfo.alarm_type | alarmHistory}}
+              {{historyModal ? '关闭' : '显示'}}{{alarmInfo.alarm_type | alarmHistory}}
             </span>
           </button>
           <!-- notify start -->
@@ -137,31 +141,31 @@
   </div> 
 </template>
 <script>
-import { getDeviceAlertInfo, getUserNotifyHistory } from '@/api/user'
+import { getDeviceAlertInfo } from '@/api/user'
 import { getToken } from '@/libs/util'
 import { RiQi, RiQiTime } from '@/libs/util'
-import { NotifyModal } from "_c/modal/index.js"
+import { NotifyModal, IndexHistoryModal } from "_c/modal/index.js"
 // import indexModal from '../modal/modal.vue'
 export default {
   name: 'WindowInfo',
   components: {
     NotifyModal,
-    // indexModal
+    IndexHistoryModal
   },
   data() {
     return {
-      device_id:'',
+      history: true,
       alarmInfo:'',
       hidecell: false,
-      showModal: false,
-      notifyData: {
-        list: [],
-        name: '',
-        tel: '',
-        value: 1
-      },
+      historyModal: false,
       notifyModal: false,
-      token: getToken()
+      token: getToken(),
+      userAllNotify: {
+        user_id: "",
+        device_id:'',
+        tel:'',
+        name:''
+      }
     }
   },
   filters: {
@@ -238,42 +242,26 @@ export default {
       return text
     }
   },
-  created() {
-    // this.getInfo()
-    // console.log(mapActions)
-  }, 
   methods: {
-    getInfo() {
-      getDeviceAlertInfo( {'device_id': this.device_id, token: this.token}).then(res => {
-        console.log(res)
-        if (res.data.status === 0) {
-          this.alarmInfo = res.data.data
-        }
-      })
-    },
     showcell () {
-      console.log(111111)
       this.hidecell = !this.hidecell
     },
     allNotify (item) {
-      console.log(item)
+      this.userAllNotify.device_id = item.data[0].device_id
+      this.userAllNotify.user_id = item.data[0].user_id
+      this.userAllNotify.name = item.name
+      this.userAllNotify.tel = item.phone
       this.notifyModal = true
-      getUserNotifyHistory({ 'token': this.token, 'device_id': item.data[0].device_id, 'user_id': item.data[0].user_id })
-      .then(res => {
-        console.log(res)
-        if (res.data.status === 0) {
-          this.notifyData.list = res.data.data
-          this.notifyData.name = item.name
-          this.notifyData.tel = item.phone
-        }
-      })
     },
     notifyModalChange (val) {
       this.notifyModal = val
+    },
+    historyBtnClick () {
+      this.historyModal = !this.historyModal
     }
   }
 }
 </script>
 <style lang="less" scoped>
-@import "windowInfo.less";
+@import "./windowInfo.less";
 </style>

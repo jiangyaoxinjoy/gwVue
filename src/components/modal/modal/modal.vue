@@ -39,7 +39,8 @@
 </template>
 <script>
 import { ChartLine } from '_c/charts/index'
-import { mapActions } from 'vuex'
+import { getToken } from '@/libs/util'
+import { getDevicePressurehistory, getDeviceOpenhistory } from '@/api/user'
 import { RiQi, RiQiYear } from '@/libs/util'
 export default {
   name: 'indexModal',
@@ -60,6 +61,7 @@ export default {
   },
   data () {
     return {
+      token: getToken(),
       columns: [
         {
           title: '打开圈数',
@@ -175,7 +177,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getDevicePressurehistory', 'getDeviceOpenhistory']),
+    // ...mapActions(['getDevicePressurehistory', 'getDeviceOpenhistory']),
     cancel () {
       this.$emit('hideModal', true)
     },
@@ -185,25 +187,27 @@ export default {
       // })
     },
     initPressureData () {
-      this.getDevicePressurehistory({ 'device_id': this.deviceId, 'selectTime': this.selectTime }).then(res => {
-        // console.log(res)
+      getDevicePressurehistory({ 'device_id': this.deviceId, 'selectTime': this.selectTime,'token': this.token }).then(res => {
+        console.log(res.data)
+        var data = res.data.data
         this.lineData = {}
-        if (res.list != null) {
-          this.lineTableData = res.list
-          res.list.forEach((val, key) => {
-            let data = RiQi(val.sendtime)
-            this.lineData[data] = val.pressure_value
+        if (data.list != null) {
+          this.lineTableData = data.list
+          data.list.forEach((val, key) => {
+            let time = RiQi(val.sendtime)
+            this.lineData[time] = val.pressure_value
           })
-          this.value1 = res.value1
-          this.value2 = res.value2
+          this.value1 = data.value1
+          this.value2 = data.value2
         }
       })
     },
     initOpenData () {
-      this.getDeviceOpenhistory({ 'device_id': this.deviceId }).then(res => {
-        console.log(res)
-        if (res != null) {
-          this.openTableData = res
+      getDeviceOpenhistory({ 'device_id': this.deviceId, 'token': this.token }).then(res => {
+        console.log(res.data.data)
+        var data = res.data.data
+        if (data != null) {
+          this.openTableData = data
         }
       })
     },

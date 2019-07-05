@@ -1,14 +1,15 @@
 import vue from 'vue'
-import WindowInfo from '@/view/alarm_monitor/components/windowInfo.vue'
+import WindowInfo from './windowInfo.vue'
 
 const InfoConstructor = vue.extend(WindowInfo)
 
-function appendWindowInfo(data) {
+function appendWindowInfo(data, history) {
   const infoDom = new InfoConstructor({
     el: document.createElement('div'),
     data() {
       return {
-        alarmInfo: data
+        alarmInfo: data,
+        history: history
       }
     }
   })

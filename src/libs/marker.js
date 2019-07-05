@@ -1,8 +1,10 @@
-function SquareOverlay (center, length, color,map) {
+function SquareOverlay (center, length, color,map,deviceId) {
   this._center = center;
   this._length = length;
   this._color = color; 
   this._map = map 
+  this._deviceId = deviceId
+  this.name = 'myMarker'
 }
 // 继承API的BMap.Overlay    
 SquareOverlay.prototype = new BMap.Overlay();
@@ -63,17 +65,29 @@ SquareOverlay.prototype.hide = function() {
 // 添加自定义方法   
 SquareOverlay.prototype.toggle = function() {    
   console.log('1111111')
-  if (this._div) {    
-      if (this._div.style.display == "") {    
-          this.hide();    
-      }    
-      else {    
-          this.show();    
-      }    
-  }    
+  // if (this._div) {    
+  //     if (this._div.style.display == "") {    
+  //         this.hide();    
+  //     }    
+  //     else {    
+  //         this.show();    
+  //     }    
+  // }    
 }
-SquareOverlay .prototype.addEventListener = function(event,fun){
+
+SquareOverlay.prototype.getMsg = function() {    
+  console.log('2222')
+  return {
+    lng: this._center.lng,
+    lat: this._center.lat,
+    device_id: this._deviceId
+  }
+}
+SquareOverlay.prototype.addEventListener = function(event,fun){
         this._div['on'+event] = fun;
     }
+// SquareOverlay.prototype.removeEventListener = function(event,fun){
+//         this._div['on'+event] = fun;
+//     }
 
 module.exports = SquareOverlay;

@@ -57,7 +57,7 @@
             <CellGroup @on-click="openAlarm">
               <Cell
                 v-for="(item, index) in alarmData"
-                :extra="item.hearttime"
+                :extra="item.hearttime | timeFilter"
                 :label="item.address"
                 :key="item.Id"
                 :name="index"
@@ -138,7 +138,8 @@ import PL from '@/assets/images/PL2.png'
 import { getClientWidth } from '@/libs/tools.js'
 import { Companyselect } from '_c/input/index'
 import { markerEvent } from '@/libs/func.js'
-console.log(markerEvent)
+import { RiQiYear } from '@/libs/util'
+// console.log(markerEvent)
 export default {
   components: {
     Companyselect,
@@ -153,7 +154,7 @@ export default {
   data () {
     return { 
       unalertDeviceFlag: false,
-      selectCompany: 0,
+      selectCompany: 1,
       windowWidth: getClientWidth(),
       notifyModal: false,
       notifyData: "",
@@ -231,7 +232,6 @@ export default {
     chooseAlertList: {
       handler(val) {
         this.setMarker()
-        // this.mapDetail()
       },
       // immediate: false
     },
@@ -276,6 +276,7 @@ export default {
       this.chooseAlertList = list  
       this.alarmData = list
     },
+    //没有报警的标记点
     setUnalertMarker () {
       if (this.unalertDeviceList.length === 0) return
       var map = this.map
@@ -289,8 +290,7 @@ export default {
           width : 200,     // 信息窗口宽度
           height: 100,     // 信息窗口高度
           title :  `设备号： ${val.device_id}`, // 信息窗口标题
-          enableMessage:true,//设置允许信息窗发送短息
-          message:"亲耐滴，晚上一起吃个饭吧？戳下面的链接看下地址喔~"
+          enableMessage:true//设置允许信息窗发送短息
         }
         var infoWindow = new BMap.InfoWindow(`地址：${val.address}`, opts);  // 创建信息窗口对象 
 
@@ -299,61 +299,66 @@ export default {
         })
       })
     },
+    //报警状态的标记点
     setMarker () {
       var map = this.map
-      console.log(111)
-      // this.removeMarkerEvent()
-      map.clearOverlays(); 
+      this.removeMarkerEvent()
+      // map.clearOverlays(); 
       if (this.chooseAlertList.length === 0 ) return  
-      var points = [];     
-      var that = this
-      this.chooseAlertList.forEach( (val,key) => {
-        (function(item,k){
-          var point = new BMap.Point( item.lng, item.lat);
-          points.push(point)
-          let color = that.markerColor(item.state)
-          var myMarker = new SquareOverlay({lng:item.lng, lat:item.lat}, 30, color,map); 
-          map.addOverlay(myMarker);
+      var points = new Array();     
+      // var that = this
+      this.chooseAlertList.forEach( (item,key) => {
+        var point = new BMap.Point( item.lng, item.lat);
+        points.push(point)
+        let color = this.markerColor(item.state)
+        var myMarker = new SquareOverlay({lng:item.lng, lat:item.lat}, 30, color,map, item.device_id); 
+        map.addOverlay(myMarker);
 
-          myMarker.addEventListener('click',function(){
-            that.chooseAlert = item
-            that.markerWindow(point)
-          });
-        
-        })(val,key)
-        map.setViewport(points)
+        myMarker.addEventListener('click', () => {
+          console.log(this.infoWindow)
+          // if (this.infoWindow != undefined) {
+          //   console.log(this.infoWindow.style)
+          // } else {
+          //   this.openWindow(myMarker)
+          // }
+         
+          this.openWindow(myMarker)
+        });        
       })
+      map.setViewport(points)
     },
-    // markerEvent (item, ponit) {
-    //   this.chooseAlert = item
-    //   this.markerWindow(point)
-    // },
+    openWindow (e) {
+      // console.log(e)
+      this.chooseAlert = e.getMsg()    
+      this.markerWindow()
+    },
     removeMarkerEvent () {
       var map = this.map
       var allOverlay = map.getOverlays();
-      console.log(allOverlay)
-
-      for (var i = 0; i < allOverlay.length -1; i++){
-        allOverlay[i].removeEventListener("click", function () {
-          // body...
-        })
-         // console.log(allOverlay[i])
-        // if(allOverlay[i].getLabel().content == "我是id=1"){
-        //   map.removeOverlay(allOverlay[i]);
-        //   return false;
-        // }
+      for(var i = 0;i<allOverlay.length;i++) {
+        var marker = allOverlay[i]
+        if (marker.name = 'myMarker') {
+          marker.removeEventListener("click", () => {
+            this.openWindow(marker)
+          });
+          console.log('removeMarkerEvent') 
+          map.removeOverlay(marker);
+        }
       }
     },
-    markerWindow (point) {
-      if (this.chooseAlertList.length === 0) return
+    //报警标记点的窗口
+    markerWindow () {
+      var point = new BMap.Point( this.chooseAlert.lng, this.chooseAlert.lat);
+      var centerPoint = new BMap.Point( Number(this.chooseAlert.lng) + 0.0008, this.chooseAlert.lat);
+      // if (this.chooseAlertList.length === 0) return
       var map = this.map
-      map.centerAndZoom(point, 20)
+      map.centerAndZoom(centerPoint, 20)
       var opts = {
           width : 350,     // 信息窗口宽度
           height: 450,     // 信息窗口高度
       };
       var sContent =`
-        <div id='test'>
+        <div id="windowInfo">
           <div class="ivu-spin ivu-spin-large ivu-spin-fix">
             <div class="ivu-spin-main">
               <span class="ivu-spin-dot"></span> 
@@ -362,21 +367,13 @@ export default {
           </div>
         </div>`;
       var infoWindow = new BMap.InfoWindow(sContent,opts);
+      this.infoWindow = infoWindow
       map.openInfoWindow(infoWindow,point)
-      // console.log(document.getElementById("test"))  
-      this.getShowAlertInfo({ "device_id": this.chooseAlert["device_id"]}).then( res => {
-        this.alertInfo = res
-        
-        var MyComponent = Vue.extend(mapInfo)
-
-        var component= new MyComponent({
-          propsData: {
-            alarmInfo: this.alertInfo
-          }
-        }).$mount();      
-
-        document.getElementById('test').innerHTML = "";
-        document.getElementById('test').appendChild(component.$el);
+      this.getShowAlertInfo({ "device_id": this.chooseAlert["device_id"]})
+      .then( res => {
+        setTimeout(() => {
+          this.$windowinfo(res, false)
+        })
       })
     },
     markerColor(val){
@@ -401,12 +398,11 @@ export default {
       return color
     },
     openAlarm (index) {
-      // this.$Message.info({ content: e })
-      console.log(index)
+
       this.chooseAlert = this.alarmData[index]
-      this.chooseAlertList = [this.chooseAlert]
-      // var point = new BMap.Point( this.chooseAlert.lng, this.chooseAlert.lat);
-      // this.markerWindow(point)
+      console.log(this.chooseAlert)
+      this.markerWindow()
+      // this.chooseAlertList = [this.chooseAlert]
     },
     changLoginOutState (val) {
       console.log(val)
@@ -497,7 +493,10 @@ export default {
           break
       }
       return texts
-    }
+    },
+    timeFilter: function (value) {
+      return RiQiYear(value)
+    },
   },
   mounted() {
     // 百度地图API功能
@@ -616,6 +615,21 @@ export default {
   .headerSelect.ivu-select{
     color: #fff;
   } 
+  .show .info{
+    height: 450px;
+  }
+  .show .step_wrap {
+    margin-left: 12px;
+  }
+  .show .tel{
+    margin-right: 53px;
+  }
+  .show .step_block .step_btn{
+    width: calc(100% - 50px);
+  }
+  .show .ivu-card-bordered {
+    min-height: 440px;
+  }
 </style>
 <style type="text/css" scoped>
   .ivu-spin-fix{

@@ -71,7 +71,7 @@ export default {
         {
           title: '发生时间',
           key: 'alarm_on',
-          minWidth: 145,
+          minWidth: 150,
           render: (h, params) => {
             let time = RiQiYear(params.row.hearttime)
             return h('span', time)

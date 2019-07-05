@@ -1,21 +1,24 @@
 <template>
   <Modal
     v-model="show"
-    class="notifyModal"
+    class-name="notifyModal"
     :footer-hide="true"
-    @on-visible-change="changeState">
+    @on-visible-change="changeState"
+    @loading="loading">
     <div slot="header" class="header">
-      <h3> {{notifyData.name}} <span>{{notifyData.tel}}</span></h3>
+      <h3> {{userAllNotify.name}} <span>{{userAllNotify.tel}}</span></h3>
     </div>
     <div class="content">
-      <div v-for="notify in notifyData.list" class="wrap" :key="notify.Id">
+      <div class="wrap">
         <Steps
+          v-for="notify in notifyData.list" 
+          :key="notify.Id"
           :current="notify.state == 1 ? 3 : 2"
           :status="notify.state == 1 ? 'finish' : 'error'"
           size='small'
         >
           <Step class="stepitem" :title="notify.sendtime | time"></Step>
-          <Step class="stepitem" :title="notify.type | notifyTypeMethod"></Step>
+          <<Step class="stepitem" :title="notify.type | notifyTypeMethod"></Step>
           <Step class="stepitem" :title="[notify.receivetime, notify.state] | stateFilter"></Step>
         </Steps>
       </div>
@@ -24,42 +27,46 @@
 </template>
 <script>
 import { RiQi, RiQiTime } from '@/libs/util'
+import { getUserNotifyHistory } from '@/api/user'
+import { getToken } from '@/libs/util'
 export default {
   name: "NotifyModal",
   props: {
-    notifyData: Object,
-    notifyModal: Boolean
+    notifyModal: Boolean,
+    userAllNotify: Object
   },
   data () {
     return {
-      show: false
+      show: false,
+      token: getToken(),
+      notifyData: {
+        list: [],
+        value: 1
+      },
+      loading: true
     }
   },
   watch: {
     notifyModal:{
       handler(val) {
         this.show = val
+        if (val) {
+          this.getData()
+        }
       },
       immediate: true
     }
   },
-  // computed: {
-  //   show: {
-  //     get() {
-  //       return this.notifyModal
-  //     },
-  //     set() {}
-  //   }
-  // },
   filters: {
     notifyTypeMethod: function (value) {
+      // console.log(value)
       let method = ''
       switch (value) {
         case 1:
-          method = '¶ÌÐÅ'
+          method = 'çŸ­ä¿¡'
           break
         case 2:
-          method = 'Î¢ÐÅ'
+          method = 'å¾®ä¿¡'
           break
         default:
           method = ''
@@ -76,23 +83,41 @@ export default {
     },
     stateFilter: function ([time, state]) {
       if (state === 0 && time === 0) {
-        return '·¢ËÍÖÐ'
+        return 'å‘é€ä¸­'
       } else if (state === 1) {
         return RiQiTime(time)
       } else {
-        return 'Ê§°Ü'
+        return 'å¤±è´¥'
       }
     },
+  },
+  created() {
+    // this. getData()
   },
   methods: {
     changeState (val) {
        this.$emit('stateChange', val)
+    },
+    getData () {
+      getUserNotifyHistory({'device_id': this.userAllNotify.device_id, 'user_id': this.userAllNotify.user_id, 'token': this.token })
+      .then(res => {
+        console.log(res)
+        if (res.data.status === 0) {
+          this.notifyData.list = res.data.data
+          this.loading = false
+        }
+      })
     }
-    // hideModal() {
-    //   console.log(111)
-    //   this.show = false
-    //   this.$emit('stateChange', false)
-    // }
   }
 }
 </script>
+<style type="text/css">
+  .notifyModal .content {
+    height: 450px;
+    margin-left: 40px;
+    overflow-y: scroll;
+  }
+  .notifyModal .ivu-steps {
+    margin-top: 5px;
+  }
+</style>
