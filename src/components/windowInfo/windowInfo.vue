@@ -143,7 +143,7 @@
 <script>
 import { getDeviceAlertInfo } from '@/api/user'
 import { getToken } from '@/libs/util'
-import { RiQi, RiQiTime } from '@/libs/util'
+// import { RiQi, RiQiTime } from '@/libs/util'
 import { NotifyModal, IndexHistoryModal } from "_c/modal/index.js"
 // import indexModal from '../modal/modal.vue'
 export default {
@@ -166,54 +166,6 @@ export default {
         tel:'',
         name:''
       }
-    }
-  },
-  filters: {
-    stateFilter: function ([time, state]) {
-      if (state === 0 && time === 0) {
-        return '发送中'
-      } else if (state === 1) {
-        return RiQiTime(time)
-      } else {
-        return '失败'
-      }
-    },
-    time: function (value) {
-      if (value === 0) {
-        return ''
-      }
-      let time = RiQiTime(value)
-      return time
-    },
-    timeFilter: function (value) {
-      return RiQi(value)
-    },
-    notifyTypeMethod: function (value) {
-      let method = ''
-      switch (value) {
-        case 1:
-          method = '短信'
-          break
-        case 2:
-          method = '微信'
-          break
-        default:
-          method = ''
-          break
-      }
-      return method
-    },
-    alarmHistory: function (value) {
-      let method = ''
-      switch (value) {
-        case '10':
-          method += '水压历史数据'
-          break
-        default:
-          method += '历史数据'
-          break
-      }
-      return method
     }
   },
   computed: {

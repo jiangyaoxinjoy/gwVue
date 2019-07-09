@@ -176,6 +176,8 @@
 </div>
 </template>
 <script>
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import { BmView, BmMarker} from 'vue-baidu-map'
 import { RiQiYear } from '@/libs/util'
 import { mapActions, mapState } from 'vuex'
 import { Companyselect } from '_c/input/index'
@@ -184,7 +186,10 @@ var url = ''
 process.env.NODE_ENV === 'development' ? url = config.baseUrl.dev : url = config.baseUrl.pro
 export default {
   components: {
-    Companyselect
+    Companyselect,
+    BaiduMap,
+    BmView, 
+    BmMarker
   },
   data () {
     return {

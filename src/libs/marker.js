@@ -1,12 +1,16 @@
-function SquareOverlay (center, length, color,map,deviceId) {
+function SquareOverlay (center, length, color,map,deviceId ,fn) {
   this._center = center;
   this._length = length;
   this._color = color; 
   this._map = map 
   this._deviceId = deviceId
   this.name = 'myMarker'
+  this._clickFn = fn
+  // this._vue = that
 }
 // 继承API的BMap.Overlay    
+// SquareOverlay.prototype = new BMap.Marker()
+
 SquareOverlay.prototype = new BMap.Overlay();
 // 实现初始化方法  
 SquareOverlay.prototype.initialize = function (map) {   
@@ -45,9 +49,15 @@ SquareOverlay.prototype.initialize = function (map) {
 // 实现绘制方法   
 SquareOverlay.prototype.draw = function () {    
   // 根据地理坐标转换为像素坐标，并设置给容器    
+  var that =this;
   var position = this._map.pointToOverlayPixel(this._center);    
   this._div.style.left = position.x - this._length / 2 + "px";    
-  this._div.style.top = position.y - this._length / 2 + "px";    
+  this._div.style.top = position.y - this._length / 2 + "px";  
+  this._div.onclick = function () {
+    that._clickFn(that._center,that._deviceId)
+  }
+  // this._div.addEventListenzer('click', this._clickFn(this._vue))
+  // this._div.onclick = this._clickFn(this._vue)
 }
 // 实现显示方法    
 SquareOverlay.prototype.show = function() {   
@@ -83,9 +93,18 @@ SquareOverlay.prototype.getMsg = function() {
     device_id: this._deviceId
   }
 }
+SquareOverlay.prototype.getPosition = function () {
+  return new BMap.Point(this._center.lng, this._center.lat);
+}
+
+SquareOverlay.prototype.getMap = function () {
+  return this._map
+}
+
 SquareOverlay.prototype.addEventListener = function(event,fun){
-        this._div['on'+event] = fun;
-    }
+    // this._div['on'+event] = fun;
+    this._div.addEventListener(event, fn)
+}
 // SquareOverlay.prototype.removeEventListener = function(event,fun){
 //         this._div['on'+event] = fun;
 //     }

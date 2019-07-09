@@ -26,7 +26,6 @@
   </Modal>
 </template>
 <script>
-import { RiQi, RiQiTime } from '@/libs/util'
 import { getUserNotifyHistory } from '@/api/user'
 import { getToken } from '@/libs/util'
 export default {
@@ -56,43 +55,6 @@ export default {
       },
       immediate: true
     }
-  },
-  filters: {
-    notifyTypeMethod: function (value) {
-      // console.log(value)
-      let method = ''
-      switch (value) {
-        case 1:
-          method = '短信'
-          break
-        case 2:
-          method = '微信'
-          break
-        default:
-          method = ''
-          break
-      }
-      return method
-    },
-    time: function (value) {
-      if (value === 0) {
-        return ''
-      }
-      let time = RiQiTime(value)
-      return time
-    },
-    stateFilter: function ([time, state]) {
-      if (state === 0 && time === 0) {
-        return '发送中'
-      } else if (state === 1) {
-        return RiQiTime(time)
-      } else {
-        return '失败'
-      }
-    },
-  },
-  created() {
-    // this. getData()
   },
   methods: {
     changeState (val) {

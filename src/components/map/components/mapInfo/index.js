@@ -1,5 +1,3 @@
-// import mapInfo from './mapInfo.vue'
-// export default mapInfo
 import Vue from 'vue'
 import Icons from '_c/icons/'
 import indexModal from '../modal/modal.vue'

@@ -57,15 +57,15 @@
             <CellGroup @on-click="openAlarm">
               <Cell
                 v-for="(item, index) in alarmData"
-                :extra="item.hearttime | timeFilter"
+                :extra="item.hearttime | timeYearFilter"
                 :label="item.address"
                 :key="item.Id"
                 :name="index"
               >
-              <Button v-if="item.state === '10'" size="small" type="success">{{item.state | textFilter}}</Button>
-              <Button v-if="item.state === '20'" size="small" type="info">{{item.state | textFilter}}</Button>
-              <Button v-if="item.state === '30'" size="small" type="warning">{{item.state | textFilter}}</Button>
-              <Button v-if="item.state === '70'" size="small" type="error">{{item.state | textFilter}}</Button>
+              <Button v-if="item.state === '10'" size="small" type="success">{{item.state | alarmTypeFilter}}</Button>
+              <Button v-if="item.state === '20'" size="small" type="info">{{item.state | alarmTypeFilter}}</Button>
+              <Button v-if="item.state === '30'" size="small" type="warning">{{item.state | alarmTypeFilter}}</Button>
+              <Button v-if="item.state === '70'" size="small" type="error">{{item.state | alarmTypeFilter}}</Button>
             </Cell>
             </CellGroup>
           </Drawer>
@@ -138,7 +138,7 @@ import PL from '@/assets/images/PL2.png'
 import { getClientWidth } from '@/libs/tools.js'
 import { Companyselect } from '_c/input/index'
 import { markerEvent } from '@/libs/func.js'
-import { RiQiYear } from '@/libs/util'
+// import { RiQiYear } from '@/libs/util'
 // console.log(markerEvent)
 export default {
   components: {
@@ -199,13 +199,14 @@ export default {
       colc:[],
       dayString:[],
       alertInfo:"",
-      chooseAlert:"",
+      chooseAlert: {},
       zoom: 16,
       chooseAlertList:[],
       canGetUnalertDevice: false,
       deviceParams: {},
       unalertDeviceList: [],
-      loading: true
+      loading: true,
+      markersProduct: []
     }
   },
   beforeCreate () {
@@ -302,33 +303,77 @@ export default {
     //报警状态的标记点
     setMarker () {
       var map = this.map
-      this.removeMarkerEvent()
+      // this.removeMarkerEvent()
       // map.clearOverlays(); 
+      if (this.markerClusterer) {
+        this.markerClusterer.clearMarkers()      
+      }
+
+      if (this.infoWindow) {
+        this.infoWindow.close()
+      }
+
       if (this.chooseAlertList.length === 0 ) return  
-      var points = new Array();     
-      // var that = this
+      var markers = new Array()
+      var points = new Array();
       this.chooseAlertList.forEach( (item,key) => {
-        var point = new BMap.Point( item.lng, item.lat);
+        var point = new BMap.Point( item.lng, item.lat)
         points.push(point)
         let color = this.markerColor(item.state)
-        var myMarker = new SquareOverlay({lng:item.lng, lat:item.lat}, 30, color,map, item.device_id); 
-        map.addOverlay(myMarker);
+        var myMarker = new SquareOverlay({lng:item.lng, lat:item.lat}, 30, color,map, item.device_id, this.addClickHandlerProduct)
+        // map.addOverlay(myMarker);
+        // myMarker.addEventListener('click', () => {
+        //   console.log(111)
+        //   // this.openWindow(myMarker)
+        // });
 
-        myMarker.addEventListener('click', () => {
-          console.log(this.infoWindow)
-          // if (this.infoWindow != undefined) {
-          //   console.log(this.infoWindow.style)
-          // } else {
-          //   this.openWindow(myMarker)
-          // }
-         
-          this.openWindow(myMarker)
-        });        
+        // this.addClickHandlerProduct(myMarker)
+        // console.log(myMarker.getPosition())
+        var marker = new BMap.Marker(point)
+        // console.log(marker.point)
+        markers.push(myMarker)
       })
+      this.markersProduct = markers
+      // var markerClusterer = new BMapLib.MarkerClusterer(map, {markers: this.markersProduct});
       map.setViewport(points)
+      this.markerClustererProduct()
     },
+    markerClustererProduct () {
+      var map = this.map
+      var markerClusterer = new BMapLib.MarkerClusterer(map, {markers: this.markersProduct});
+      this.markerClusterer = markerClusterer
+      // this.addClickHandlerProduct()
+    },
+    addClickHandlerProduct (center,device) {
+      console.log(center.lng)
+      this.chooseAlert.lng = center.lng
+      this.chooseAlert.lat = center.lat
+      this.chooseAlert.device_id = device
+      this.markerWindow()
+      console.log(this)
+    },
+    // setMarker () {
+    //   var map = this.map
+    //   this.removeMarkerEvent()
+    //   // map.clearOverlays(); 
+    //   if (this.chooseAlertList.length === 0 ) return  
+    //   var points = new Array();     
+    //   // var that = this
+    //   this.chooseAlertList.forEach( (item,key) => {
+    //     var point = new BMap.Point( item.lng, item.lat);
+    //     points.push(point)
+    //     let color = this.markerColor(item.state)
+    //     var myMarker = new SquareOverlay({lng:item.lng, lat:item.lat}, 30, color,map, item.device_id); 
+    //     map.addOverlay(myMarker);
+    //     console.log(BMap.Marker)
+    //     myMarker.addEventListener('click', () => {
+    //       this.openWindow(myMarker)
+    //     });        
+    //   })
+    //   map.setViewport(points)
+    // },
     openWindow (e) {
-      // console.log(e)
+      console.log(e)
       this.chooseAlert = e.getMsg()    
       this.markerWindow()
     },
@@ -349,7 +394,7 @@ export default {
     //报警标记点的窗口
     markerWindow () {
       var point = new BMap.Point( this.chooseAlert.lng, this.chooseAlert.lat);
-      var centerPoint = new BMap.Point( Number(this.chooseAlert.lng) + 0.0008, this.chooseAlert.lat);
+      var centerPoint = new BMap.Point( Number(this.chooseAlert.lng) + 0.0008, Number(this.chooseAlert.lat) + 0.0007);
       // if (this.chooseAlertList.length === 0) return
       var map = this.map
       map.centerAndZoom(centerPoint, 20)
@@ -368,6 +413,7 @@ export default {
         </div>`;
       var infoWindow = new BMap.InfoWindow(sContent,opts);
       this.infoWindow = infoWindow
+      console.log(infoWindow)
       map.openInfoWindow(infoWindow,point)
       this.getShowAlertInfo({ "device_id": this.chooseAlert["device_id"]})
       .then( res => {
@@ -398,7 +444,6 @@ export default {
       return color
     },
     openAlarm (index) {
-
       this.chooseAlert = this.alarmData[index]
       console.log(this.chooseAlert)
       this.markerWindow()
@@ -473,31 +518,11 @@ export default {
       // this.setUnalertMarker()
     }
   },
-  filters: {
-    textFilter: val => {
-      var texts = ''
-      switch (val) {
-        case '10':
-          texts = '水压异常'
-          break
-        case '20':
-          texts = '阀门打开'
-          break
-        case '30':
-          texts = '倾倒'
-          break
-        case '70':
-          texts = '设备异常'
-          break
-        default:
-          break
-      }
-      return texts
-    },
-    timeFilter: function (value) {
-      return RiQiYear(value)
-    },
-  },
+  // filters: {
+  //   timeFilter: function (value) {
+  //     return RiQiYear(value)
+  //   },
+  // },
   mounted() {
     // 百度地图API功能
     // 创建Map实例

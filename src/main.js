@@ -18,6 +18,7 @@ import 'v-org-tree/dist/v-org-tree.css'
 // import BaiduMap from 'vue-baidu-map'
 import vuescroll from 'vuescroll/dist/vuescroll-native'
 import 'vuescroll/dist/vuescroll.css'
+import filter from '@/libs/filter.js'
 
 import registryWindowInfo from '_c/windowInfo/index.js'
 Vue.use(registryWindowInfo)
@@ -58,31 +59,7 @@ Vue.prototype.$config = config
 importDirective(Vue)
 Vue.directive('clickOutside', clickOutside)
 
-// import WindowInfo from './view/show/components/windowInfo'
-
-// Vue.use(WindowInfo)
-
-Vue.filter('alarmTypeFilter', function(val) {
-  let type = ''
-  switch (val) {
-    case '10':
-      type = '水压异常'
-      break;
-    case '20':
-      type = '阀门打开'
-      break;
-    case '30':
-      type = '撞到'
-      break;
-    case '70':
-      type = '设备异常'
-      break;  
-    default:
-      type = ''
-      break;
-  }
-  return type
-})
+Object.keys(filter).forEach(key => Vue.filter(key, filter[key]))
 
 /* eslint-disable no-new */
 new Vue({
