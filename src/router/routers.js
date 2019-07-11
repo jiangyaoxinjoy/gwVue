@@ -38,7 +38,7 @@ export default [
   {
     path: '/',
     name: '_alarm_monitoring',
-    redirect: '/alarm_monitoring',
+    redirect: 'alarm_monitoring',
     component: Main,
     meta: {
       hideInMenu: true
@@ -58,17 +58,11 @@ export default [
       {
         path: '/status',
         name: 'status',
-        // name: '_statusData',
-        component: Main,
-        redirect: 'status/data',
-        // meta: {
-        //   title: '设备状态',
-        //   icon: 'md-home'
-        // },
+        redirect: '/status/data',
         component: () => import('@/view/status/status.vue'),
         children: [
           {
-            path: 'data',
+            path: '/status/data',
             name: 'statusData',
             meta: {
               title: '设备状态-数据列表',
@@ -77,7 +71,7 @@ export default [
             component: () => import('@/view/status/components/dataContent.vue')
           },
           {
-            path: 'map',
+            path: '/status/map',
             name: 'statusMap',
             meta: {
               title: '设备状态-地图'
@@ -103,7 +97,7 @@ export default [
     component: Main,
     children: [
       {
-        path: 'user',
+        path: '/manage/user',
         name: 'manage-user',
         meta: {
           title: '人员管理',
@@ -112,7 +106,7 @@ export default [
         component: () => import('@/view/manage/person/person.vue')
       },
       {
-        path: 'device',
+        path: '/manage/device',
         name: 'manage-device',
         meta: {
           title: '设备管理',
@@ -121,7 +115,7 @@ export default [
         component: () => import('@/view/manage/device/device.vue')
       },
       {
-        path: 'company',
+        path: '/manage/company',
         name: 'manage-company',
         meta: {
           title: '公司管理',

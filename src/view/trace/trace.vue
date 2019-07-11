@@ -43,7 +43,7 @@
           <Button @click="handleReset" size="large" type="info">重置</Button>
         </FormItem>
         <FormItem class="export_wrap">
-          <form :action="url+'exportAlertTrace'" method="post">
+          <form id="upload" :action="url+'exportAlertTrace'" method="post">
             <input type="text" hidden="" name="token" :value="token">
             <input type="text" hidden="" name="addkeys" :value="alarmParams.addkeys">
             <input type="text" hidden="" name="alertState" :value="alarmParams.alertState">
@@ -75,16 +75,13 @@
 import { RiQiYear } from '@/libs/util'
 import modal from './components/modal/modal.vue'
 import { mapActions, mapState } from 'vuex'
-import config from '@/config/index.js'
-var url = ''
-process.env.NODE_ENV === 'development' ? url = config.baseUrl.dev : url = config.baseUrl.pro
+
 export default {
   components: {
     modal
   },
   data () {
     return {
-      url: url,
       alarmParams: {
         companyId: 0,
         alertState: 0,
@@ -213,7 +210,8 @@ export default {
       companyList: state => state.user.companyList,
       token: state => state.user.token,
       tableHeight: state => state.user.windowH - 60,
-      comId: state => state.user.comId
+      comId: state => state.user.comId,
+      url: state => state.user.baseUrl,
     })
   },
   created () {
@@ -304,6 +302,14 @@ export default {
       this.alarmParams.dataPicker = ['', '']
       this.alarmParams.pageNum = 1
       this.getAlertData()
+    },
+    submitForm () {
+      // return false;
+      $("#upload").ajaxSubmit(function(message) {
+        // 对于表单提交成功后处理，message为表单正常提交后返回的内容
+        console.log(message);
+      });
+      return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转
     }
   }
 }

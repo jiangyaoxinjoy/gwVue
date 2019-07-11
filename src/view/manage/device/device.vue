@@ -225,14 +225,14 @@ export default {
         ]
       },
       columns: [
-        {
-          title: '序号',
-          type: 'index2',
-          width: 60,
-          render: (h, params) => {
-            return h('span', params.index + (this.deviceParams.pageNum - 1) * this.deviceParams.limit + 1)
-          }
-        },
+        // {
+        //   title: '序号',
+        //   type: 'index2',
+        //   width: 60,
+        //   render: (h, params) => {
+        //     return h('span', params.index + (this.deviceParams.pageNum - 1) * this.deviceParams.limit + 1)
+        //   }
+        // },
         {
           title: '设备号',
           key: 'device_id',

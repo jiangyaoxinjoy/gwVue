@@ -92,26 +92,26 @@ export default {
     }
   },
   getters: {
-    comNavset: state => {
-      let nav = state.access
-      let comNav = []
-      nav.forEach(function (element, index) {
-        switch (element) {
-          case 'manage_user':
-            comNav.push({ label: '人员管理', path: '/manage/user', name: 'manage-user' })
-            break
-          case 'manage_device':
-            comNav.push({ label: '设备管理', path: '/manage/device', name: 'manage-device' })
-            break
-          case 'manage_company':
-            comNav.push({ label: '公司管理', path: '/manage/company', name: 'manage-company' })
-            break
-          default:
-            break
-        }
-      })
-      return comNav
-    }
+    // comNavset: state => {
+    //   let nav = state.access
+    //   let comNav = []
+    //   nav.forEach(function (element, index) {
+    //     switch (element) {
+    //       case 'manage_user':
+    //         comNav.push({ label: '人员管理', path: '/manage/user', name: 'manage-user' })
+    //         break
+    //       case 'manage_device':
+    //         comNav.push({ label: '设备管理', path: '/manage/device', name: 'manage-device' })
+    //         break
+    //       case 'manage_company':
+    //         comNav.push({ label: '公司管理', path: '/manage/company', name: 'manage-company' })
+    //         break
+    //       default:
+    //         break
+    //     }
+    //   })
+    //   return comNav
+    // }
   },
   actions: {
     // 登录

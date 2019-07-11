@@ -144,10 +144,12 @@ export default {
     alarmTypeChange (val) {
       this.loading = true
       this.params.alarmType = val
+      this.params.pageNum = 1
       this.queryTableData()
     },
     companyChange (val) {
       this.loading = true
+      this.params.pageNum = 1
       this.params.companyId = val
       this.queryTableData()
     }

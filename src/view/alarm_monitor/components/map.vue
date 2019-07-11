@@ -89,7 +89,9 @@ export default {
       this.infoWindow = infoWindow
       map.openInfoWindow(infoWindow,point)
       this.getDeviceAlertInfo({'device_id': this.curDeviceId}).then( res => {
-        this.$windowinfo(res, true)
+        setTimeout(() => {
+          this.$windowinfo(res, true)
+        })
       })
     },
     removeMarkerEvent () {
