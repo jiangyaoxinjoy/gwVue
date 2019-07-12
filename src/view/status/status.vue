@@ -16,16 +16,13 @@
           </RadioGroup>
         </FormItem>
         <FormItem label="地址" class="addressSearch">
-         <!--  @keydown.enter.native.prevent="handleSearch"
-          @on-change="handleClear"
-            clearable
-            enter-button -->
           <Input
             placeholder="输入关键字搜索"
             class="search-input"
             v-model="deviceParams.addkeys"
             @on-search="handleSearch"
             search
+            clearable
             @keydown.enter.native.prevent="handleSearch"/>
           </FormItem>
         <FormItem class="exportBtn">
@@ -56,7 +53,9 @@ export default {
     Companyselect
   },
   data () {
-    return {}
+    return {
+      addressTemp: ''
+    }
   },
   computed: {
     ...mapState({
@@ -79,6 +78,7 @@ export default {
     ...mapActions(['getCompanyList', 'deviceList', 'exportDeviceList']),
     ...mapMutations(['setDeviceParams']),
     queryData () {
+      console.log('123')
       this.deviceParams.pageNum = 1
       this.setDeviceParams(this.deviceParams)
     },

@@ -1,35 +1,41 @@
 <template>
   <Layout style="height: 100%" class="main">
-    <Menu mode="horizontal" :theme="theme1" active-name="1">
-        <MenuItem to='/' name="1">
+    <Menu mode="horizontal" :theme="theme1" :active-name="activeName" class="mainNav">
+      <router-link to="/" class="logo">
+        <img src="@/assets/images/logo.png">
+      </router-link>
+      <!-- <MenuItem to='/' class="logo">
+          <img :src="logo">
+      </MenuItem> -->
+      <div class="wrapper-header-nav-list">
+        <MenuItem to='/' name="alarm_monitoring">
             <Icon type="ios-paper" />
             报警监控
         </MenuItem>
-        <MenuItem name="2" to="/status">
+        <MenuItem name="status" to="/status" >
             <Icon type="ios-stats" />
             设备状态
         </MenuItem>
-        <MenuItem name="3" to='/trace'>
+        <MenuItem name="trace" to='/trace'>
             <Icon type="ios-people" />
             监控追溯
         </MenuItem>
-        <Submenu name="4">
-            <template slot="title">
-                <Icon type="ios-construct"  />
-                管理
-            </template>
-            <MenuGroup title="管理">
-                <MenuItem name="4-1" to="/manage/user" v-if="ifManageUser">用户管理</MenuItem>
-                <MenuItem name="4-2" to="/manage/company" v-if="ifManageCompany">公司管理</MenuItem>
-                <MenuItem name="4-3" to="/manage/device" v-if="ifManageDevice">设备管理</MenuItem>
-            </MenuGroup>
+        <Submenu name="manage">
+          <template slot="title">
+              <Icon type="ios-construct"  />
+              管理
+          </template>
+          <MenuGroup title="管理">
+              <MenuItem name="manage-user" to="/manage/user" v-if="ifManageUser">用户管理</MenuItem>
+              <MenuItem name="manage-company" to="/manage/company" v-if="ifManageCompany">公司管理</MenuItem>
+              <MenuItem name="manage-device" to="/manage/device" v-if="ifManageDevice">设备管理</MenuItem>
+          </MenuGroup>           
         </Submenu>
-        <div class="info-menu">
-          <MenuItem name="show" to='/show' target="_blank">
-            <Icon type="md-analytics" size="32" color="#02a2aa"/>
-          </MenuItem>
-          <user :user-name="userName"/>
-        </div>
+        <MenuItem name="show" to='/show' target="_blank">
+          <Icon type="md-analytics" size="32" color="#02a2aa"/>
+        </MenuItem>
+        <user :user-name="userName"/>
+      </div>       
     </Menu>
     <!-- <TopMenu :active-name="$route.name" /> -->
     <Layout>
@@ -47,6 +53,7 @@
 
 import { mapGetters, mapState } from 'vuex'
 import User from '_c/main/components/user'
+import logo from '@/assets/images/logo.png'
 export default {
   name: 'Main',
   components: {
@@ -58,7 +65,9 @@ export default {
       theme1: 'light',
       ifManageUser: false,
       ifManageCompany: false,
-      ifManageDevice: false
+      ifManageDevice: false,
+      activeName: this.$router.path,
+      logo
     }
   },
   beforeCreate () {
@@ -72,24 +81,26 @@ export default {
       userName: state => state.user.userName,
       access: state => state.user.access
     })
-    // ...mapGetters({
-    //   comNav: 'comNavset'
-    // })
   },
   watch: {
     access: {
       handler(val){
-        console.log(2222222)
-        // var manage = ["manage_user", "manage_device","manage_company"]
         if (val.length > 0) {
           this.ifManageUser = val.find( item => item === "manage_user") ? true : false
           this.ifManageCompany = val.find( item => item === "manage_company") ? true : false
           this.ifManageDevice = val.find( item => item === "manage_device") ? true : false
-          // console.log(company)
         }
       },
       immediate: true
     }
+  },
+  methods:{
+    menuList(){  // 这个方法里定义好，高亮和路由
+     this.activeName= this.$route.matched[1].name
+    }
+  },    
+  mounted() {
+    this.menuList()
   }
 }
 </script>

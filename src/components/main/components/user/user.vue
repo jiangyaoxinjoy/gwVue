@@ -10,18 +10,18 @@
         <DropdownItem name="logout">退出登录</DropdownItem>
       </DropdownMenu>
     </Dropdown>
-    <p-modal :modal="modal"  @changeModalState="changeModal"></p-modal>
+    <ResetPsdModal :modal="modal"  @changeModalState="changeModal" />
   </div>
 </template>
 
 <script>
 import './user.less'
 import { mapActions } from 'vuex'
-import PModal from '@/view/show/components/login-out/login-out.vue'
+import { ResetPsdModal } from '_c/modal/index'
 export default {
   name: 'User',
   components: {
-    PModal
+    ResetPsdModal
   },
   data () {
     return {

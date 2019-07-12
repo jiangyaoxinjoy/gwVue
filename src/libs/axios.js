@@ -1,17 +1,5 @@
 import axios from 'axios'
 import { getToken } from '@/libs/util'
-// import store from '@/store'
-// import { Spin } from 'iview'
-// const addErrorLog = errorInfo => {
-//   const { statusText, status, request: { responseURL } } = errorInfo
-//   let info = {
-//     type: 'ajax',
-//     code: status,
-//     mes: statusText,
-//     url: responseURL
-//   }
-//   // if (!responseURL.includes('save_error_logger')) store.dispatch('addErrorLog', info)
-// }
 
 class HttpRequest {
   constructor (baseUrl = baseURL) {
@@ -21,25 +9,17 @@ class HttpRequest {
   getInsideConfig () {
     const config = {
       baseURL: this.baseUrl,
-      // headers: {
-      // }
     }
     return config
   }
   destroy (url) {
     delete this.queue[url]
-    if (!Object.keys(this.queue).length) {
-      // Spin.hide()
-    }
   }
   interceptors (instance, url) {
     // 请求拦截
     instance.interceptors.request.use(config => {
-      // 添加全局的loading...
-      if (!Object.keys(this.queue).length) {
-        // Spin.show() // 不建议开启，因为界面不友好
-      }
-      this.queue[url] = true
+      // this.queue[url] = true
+      // console.log(this.queue)
       config.headers.common['token'] = getToken();
       return config
     }, error => {
@@ -52,16 +32,6 @@ class HttpRequest {
       return { data, status }
     }, error => {
       this.destroy(url)
-      // let errorInfo = error.response
-      // if (!errorInfo) {
-      //   const { request: { statusText, status }, config } = JSON.parse(JSON.stringify(error))
-      //   errorInfo = {
-      //     statusText,
-      //     status,
-      //     request: { responseURL: config.url }
-      //   }
-      // }
-      // addErrorLog(errorInfo)
       return Promise.reject(error)
     })
   }

@@ -26,7 +26,7 @@
     <template slot="address" slot-scope="{ row, index }">
       <span style="cursor: pointer" type="text" v-if="row.lng != ''" @click="goMap(row)">
         {{row.address}}
-        <Icon type="md-arrow-dropright" />
+        <Icon type="ios-map" size="18"/>
       </span>
     </template>
     <Page :current="deviceParams.pageNum" class-name='totalfr' slot="footer" :page-size="deviceParams.limit" @on-change="changePage" :total="dataTotal" size="small" show-total />
@@ -178,5 +178,6 @@ export default {
 .stateTag .ivu-tag-dot-inner{
   width: 8px;
   height: 8px;
+  top:  0;
 }
 </style>

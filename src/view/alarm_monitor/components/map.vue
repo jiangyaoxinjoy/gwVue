@@ -36,13 +36,8 @@ export default {
     }
   },
   mounted() {
-    console.log(11111)
     var map = new BMap.Map("monitoringMap");
     this.map = map
-    // 初始化地图,设置中心点坐标和地图级别
-    // map.centerAndZoom(new BMap.Point(121.472763,31.236552), this.zoom);
-    // 添加地图类型控件
-    // map.addControl(new BMap.MapTypeControl());  
     // 设置地图显示的城市 此项是必须设置的
     map.setCurrentCity("上海");    
     // 开启鼠标滚轮缩放      
@@ -53,7 +48,6 @@ export default {
     setMarker() {
       var map = this.map
       this.removeMarkerEvent()
-      // map.clearOverlays(); 
       var point = new BMap.Point(this.curMarker.lng, this.curMarker.lat)
       //让标记点显示在中点偏下的位置
       var centerPoint = new BMap.Point(this.curMarker.lng, Number(this.curMarker.lat) + 0.007)
@@ -64,13 +58,11 @@ export default {
           width : 450,     // 信息窗口宽度
           height: 500,     // 信息窗口高度
       };
-
       marker.addEventListener('click', this.markerWindow);
       this.markerWindow()
     },
     markerWindow () {
       var map = this.map
-      // map.centerAndZoom(point, this.zoom)
       var opts = {
           width : 450,     // 信息窗口宽度
           height: 500,     // 信息窗口高度
@@ -98,7 +90,7 @@ export default {
       var map = this.map
       var allOverlay = map.getOverlays();
       for(var i = 0;i<allOverlay.length;i++) {
-        console.log('removeMarkerEvent')       
+        // console.log('removeMarkerEvent')       
         allOverlay[i].removeEventListener("click", this.markerWindow);
         map.removeOverlay(allOverlay[i]);
       }

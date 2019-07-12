@@ -124,29 +124,24 @@
 import InforCard from '_c/info-card'
 import CountTo from '_c/count-to'
 import { ChartPie2, ChartLine2 } from '_c/charts'
-import loginOut from './components/login-out/login-out.vue'
 import { mapActions, mapState } from 'vuex'
 import Icons from '_c/icons/'
-// import mapInfo from '_c/map/components/mapInfo/mapInfo.vue'
 import SquareOverlay from '@/libs/marker.js'
 
 import Vue from 'vue/dist/vue.esm.js'
 import mapInfo from './components/windowInfo/info.vue'
 
-// const WindowInfo =  vue.extend(windowInfo)
 import PL from '@/assets/images/PL2.png'
 import { getClientWidth } from '@/libs/tools.js'
 import { Companyselect } from '_c/input/index'
 import { markerEvent } from '@/libs/func.js'
-// import { RiQiYear } from '@/libs/util'
-// console.log(markerEvent)
+
 export default {
   components: {
     Companyselect,
     InforCard,
     CountTo,
     ChartPie2,
-    loginOut,
     Icons,
     ChartLine2,
     mapInfo

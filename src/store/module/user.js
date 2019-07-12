@@ -2,14 +2,12 @@ import {
   login,
   getCompanyList,
   getUserList,
-  // logout,
   getUserInfo,
   getauthList,
   addUser,
   editUser,
   addCom,
   editCom,
-  // deviceList,
   addDevice,
   editDevice,
   importDevice,
@@ -22,14 +20,11 @@ import {
   getDeviceAlertOriginData,
   getDeviceAlertDetail,
   changePsd
-  // exportDeviceList
 } from '@/api/user'
 
 import { setToken, getToken } from '@/libs/util'
 import { getClientHeight } from '@/libs/tools'
 import { Message } from 'iview'
-// import styleJson from '@/assets/json/custom_map_config.json'
-// var styleJson = require('@/assets/json/custom_map_config.json')
 import config from '@/config/index.js'
 var url = ''
 process.env.NODE_ENV === 'development' ? url = config.baseUrl.dev : url = config.baseUrl.pro
@@ -45,8 +40,6 @@ export default {
     access: [],
     hasGetInfo: false,
     unreadCount: 0,
-    // curMarker: {},
-    // alarmInfo: {},
     windowH: '',
     authList: [],
     comNav: '',
@@ -91,28 +84,7 @@ export default {
       state.authList = payload
     }
   },
-  getters: {
-    // comNavset: state => {
-    //   let nav = state.access
-    //   let comNav = []
-    //   nav.forEach(function (element, index) {
-    //     switch (element) {
-    //       case 'manage_user':
-    //         comNav.push({ label: '人员管理', path: '/manage/user', name: 'manage-user' })
-    //         break
-    //       case 'manage_device':
-    //         comNav.push({ label: '设备管理', path: '/manage/device', name: 'manage-device' })
-    //         break
-    //       case 'manage_company':
-    //         comNav.push({ label: '公司管理', path: '/manage/company', name: 'manage-company' })
-    //         break
-    //       default:
-    //         break
-    //     }
-    //   })
-    //   return comNav
-    // }
-  },
+  getters: {},
   actions: {
     // 登录
     handleLogin ({ commit }, payload) {
@@ -152,7 +124,7 @@ export default {
         try {
           getUserInfo(state.token).then(res => {
             const data = res.data
-            console.log(data)
+            // console.log(data)
             if (data.status === 0) {
               commit('setUserName', data.data.name)
               commit('setUserId', data.data.Id)
@@ -162,6 +134,7 @@ export default {
               resolve(data.data)
             } else {
               Message.error('重新登录')
+              reject(err)
             }
           }).catch(err => {
             reject(err)
@@ -238,37 +211,6 @@ export default {
         })
       })
     },
-    // // 获取设备列表
-    // deviceList ({ state }, payload) {
-    //   return new Promise((resolve, reject) => {
-    //     payload.token = state.token
-    //     deviceList(payload).then(res => {
-    //       resolve(res.data)
-    //     }).catch(err => {
-    //       reject(err)
-    //     })
-    //   })
-    // },
-    // 导出设备列表
-    // exportDeviceList ({ state }, payload) {
-    //   return new Promise((resolve, reject) => {
-    //     exportDeviceList(payload).then(res => {
-    //       resolve(res)
-    //     }).catch(err => {
-    //       reject(err)
-    //     })
-    //   })
-    // },
-    // 导出设备事件
-    // exportDeviceEvent ({ state }, payload) {
-    //   return new Promise((resolve, reject) => {
-    //     exportDeviceList(payload).then(res => {
-    //       resolve(res)
-    //     }).catch(err => {
-    //       reject(err)
-    //     })
-    //   })
-    // },
     // 添加设备
     addDevice ({ state }, payload) {
       return new Promise((resolve, reject) => {

@@ -7,7 +7,7 @@ const { title, cookieExpires, useI18n } = config
 export const TOKEN_KEY = 'gwxftoken'
 
 export const setToken = (token) => {
-  Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 1 })
+  Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 10 })
 }
 
 export const getToken = () => {
@@ -16,16 +16,16 @@ export const getToken = () => {
   else return false
 }
 
-export const hasChild = (item) => {
-  return item.children && item.children.length !== 0
-}
+// export const hasChild = (item) => {
+//   return item.children && item.children.length !== 0
+// }
 
-const showThisMenuEle = (item, access) => {
-  if (item.meta && item.meta.access && item.meta.access.length) {
-    if (hasOneOf(item.meta.access, access)) return true
-    else return false
-  } else return true
-}
+// const showThisMenuEle = (item, access) => {
+//   if (item.meta && item.meta.access && item.meta.access.length) {
+//     if (hasOneOf(item.meta.access, access)) return true
+//     else return false
+//   } else return true
+// }
 /**
  * @param {Array} list 通过路由列表得到菜单列表
  * @returns {Array}
@@ -302,47 +302,47 @@ export const findNodeUpperByClasses = (ele, classes) => {
   }
 }
 
-export const findNodeDownward = (ele, tag) => {
-  const tagName = tag.toUpperCase()
-  if (ele.childNodes.length) {
-    let i = -1
-    let len = ele.childNodes.length
-    while (++i < len) {
-      let child = ele.childNodes[i]
-      if (child.tagName === tagName) return child
-      else return findNodeDownward(child, tag)
-    }
-  }
-}
+// export const findNodeDownward = (ele, tag) => {
+//   const tagName = tag.toUpperCase()
+//   if (ele.childNodes.length) {
+//     let i = -1
+//     let len = ele.childNodes.length
+//     while (++i < len) {
+//       let child = ele.childNodes[i]
+//       if (child.tagName === tagName) return child
+//       else return findNodeDownward(child, tag)
+//     }
+//   }
+// }
 
-export const showByAccess = (access, canViewAccess) => {
-  return hasOneOf(canViewAccess, access)
-}
+// export const showByAccess = (access, canViewAccess) => {
+//   return hasOneOf(canViewAccess, access)
+// }
 
 /**
  * @description 根据name/params/query判断两个路由对象是否相等
  * @param {*} route1 路由对象
  * @param {*} route2 路由对象
- */
-export const routeEqual = (route1, route2) => {
-  const params1 = route1.params || {}
-  const params2 = route2.params || {}
-  const query1 = route1.query || {}
-  const query2 = route2.query || {}
-  return (route1.name === route2.name) && objEqual(params1, params2) && objEqual(query1, query2)
-}
+//  */
+// export const routeEqual = (route1, route2) => {
+//   const params1 = route1.params || {}
+//   const params2 = route2.params || {}
+//   const query1 = route1.query || {}
+//   const query2 = route2.query || {}
+//   return (route1.name === route2.name) && objEqual(params1, params2) && objEqual(query1, query2)
+// }
 
 /**
  * 判断打开的标签列表里是否已存在这个新添加的路由对象
  */
-export const routeHasExist = (tagNavList, routeItem) => {
-  let len = tagNavList.length
-  let res = false
-  doCustomTimes(len, (index) => {
-    if (routeEqual(tagNavList[index], routeItem)) res = true
-  })
-  return res
-}
+// export const routeHasExist = (tagNavList, routeItem) => {
+//   let len = tagNavList.length
+//   let res = false
+//   doCustomTimes(len, (index) => {
+//     if (routeEqual(tagNavList[index], routeItem)) res = true
+//   })
+//   return res
+// }
 
 export const localSave = (key, value) => {
   localStorage.setItem(key, value)

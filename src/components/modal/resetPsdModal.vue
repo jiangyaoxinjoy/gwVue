@@ -1,5 +1,4 @@
 <template>
-  <!-- <Button type="primary" @click="modal = true">Display dialog box</Button> -->
   <Modal
     v-model="showModal"
     title="修改密码"
@@ -8,17 +7,16 @@
     @on-visible-change="model_change"
   >
     <Form :model="formItem" ref="formItem" :rules="ruleCustom"  :label-width="80">
-      <FormItem label="原始密码" prop="originPwd">
-        <Input v-model="formItem.originPwd" type="password" v-show="false"></Input>
-        <Input autocomplete="off" type="password" :maxlength="12" v-model="formItem.originPwd" placeholder="输入原始密码..."></Input>
+      <input type="text" name="a" style="display: none"/>
+      <input type="password" name="b" style="display: none"/>
+      <FormItem label="原始密码" prop="originPwd">      
+        <Input autocomplete="off" clearable type="password" v-model="formItem.originPwd" placeholder="输入原始密码..."></Input>
       </FormItem>
-      <FormItem label="新密码" prop="newPwd">
-        <Input v-model="formItem.newPwd" type="password" v-show="false"></Input>
-        <Input autocomplete="off" type="password" :maxlength="12" v-model="formItem.newPwd" placeholder="输入新密码..."></Input>
+      <FormItem label="新密码" prop="newPwd">   
+        <Input autocomplete="off"  clearable type="password" v-model="formItem.newPwd" placeholder="输入新密码..."></Input>
       </FormItem>
-      <FormItem label="确认密码" prop="againPwd">
-        <Input v-model="formItem.againPwd" type="password" v-show="false"></Input>
-        <Input autocomplete="off" ref="againPwd"  type="password" :maxlength="12" v-model="formItem.againPwd" placeholder="再输入一遍新密码..."></Input>
+      <FormItem label="确认密码" prop="againPwd">     
+        <Input autocomplete="off" clearable type="password" v-model="formItem.againPwd" placeholder="再输入一遍新密码..."></Input>
       </FormItem>
       <FormItem>
         <Button  @click="close">取消</Button>

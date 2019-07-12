@@ -181,11 +181,11 @@ export default {
     cancel () {
       this.$emit('hideModal', true)
     },
-    getData () {
-      // this.$store.dispatch('getOpenData').then(res => {
-      //   this.tableData = res
-      // })
-    },
+    // getData () {
+    //   // this.$store.dispatch('getOpenData').then(res => {
+    //   //   this.tableData = res
+    //   // })
+    // },
     initPressureData () {
       getDevicePressurehistory({ 'device_id': this.deviceId, 'selectTime': this.selectTime,'token': this.token }).then(res => {
         console.log(res.data)
@@ -216,7 +216,7 @@ export default {
     }
   },
   mounted () {
-    this.getData()
+    // this.getData()
     // this.initPressureData()
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="demo-split">
+  <div class="gw-split">
     <Split v-model="split">
       <div slot="left" class="demo-split-pane">
         <index-table />
@@ -12,9 +12,7 @@
 </template>
 
 <script>
-// import BaiMap from '_c/map/'
-import IndexTable from '_c/indexTable'
-// import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import IndexTable from '@/view/alarm_monitor/components/table/index'
 import Map from '@/view/alarm_monitor/components/map.vue'
 
 export default {
@@ -28,16 +26,11 @@ export default {
       split: 0.4
     }
   },
-  computed: {
-    curMarker () {
-      return this.$store.state.alert.curMarker
-    }
-  }
 }
 </script>
 
 <style lang="less">
-.demo-split{
+.gw-split{
     height: calc(100vh); ;
     border: 1px solid #dcdee2;
 }
