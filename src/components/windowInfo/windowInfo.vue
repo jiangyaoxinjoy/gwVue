@@ -4,16 +4,28 @@
 
     <IndexHistoryModal v-if="history" :modalShow="historyModal" :deviceId="alarmInfo.deviceId" @hideModal="historyModal = false" :alarmType="alarmInfo.alarm_type"/>
 
-    <div style="background: rgb(238, 238, 238); padding: 5px; position: relative;">
+    <div style="background-color: #eee;padding: 5px; position: relative;">
       <div class="ivu-card ivu-card-bordered">
         <div class="ivu-card-head">
           <div class="card_title">
-            <i class="card_icon iconfont icon-shuiyaxiaxian" slot="icon" style="font-size: 45px; color: rgb(92, 107, 119);"></i>
+            <i v-if="alarmInfo.alarm_type === '10'" class="card_icon iconfont icon-shuiyaxiaxian" slot="icon" style="font-size: 45px; color: rgb(92, 107, 119);"></i>
+            <i v-if="alarmInfo.alarm_type === '20'" class="card_icon iconfont icon-famen" slot="icon" style="font-size: 40px; padding: 0 15px 0 10px; color: rgb(92, 107, 119);"></i>
+            <i v-if="alarmInfo.alarm_type === '30'" class="card_icon iconfont icon--FireHydrant" slot="icon" style="font-size: 45px; color: rgb(92, 107, 119); padding: 0 10px"></i>
+            <i v-if="alarmInfo.alarm_type === '70'" class="card_icon iconfont icon-shebeiyichang" slot="icon" style="font-size: 45px; color: rgb(92, 107, 119); padding: 0 10px"></i>
             <div>
               {{alarmInfo.alarm_type | alarmTypeFilter}}
               <div class="tag ivu-tag ivu-tag-default ivu-tag-border ivu-tag-checked">
-                <span class="ivu-tag-text ivu-tag-color-default">
-                  {{ alarmInfo.isnotify == 0 ? '通知未到达' : '通知已到达'}}
+                <span v-if="alarmInfo.isnotify === 1" class="ivu-tag-text ivu-tag-color-default">
+                  通知已到达
+                  <!-- {{ alarmInfo.isnotify == 1 ? '通知已到达' : '通知未到达'}} -->
+                </span> 
+                <span v-if="alarmInfo.isnotify === 2" class="ivu-tag-text ivu-tag-color-default">
+                  未通知
+                  <!-- {{ alarmInfo.isnotify == 1 ? '通知已到达' : '通知未到达'}} -->
+                </span> 
+                <span v-if="alarmInfo.isnotify === 0" class="ivu-tag-text ivu-tag-color-default">
+                  通知未到达
+                  <!-- {{ alarmInfo.isnotify == 1 ? '通知已到达' : '通知未到达'}} -->
                 </span> 
               </div>
               <br>

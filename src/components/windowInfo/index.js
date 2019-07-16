@@ -13,9 +13,10 @@ function appendWindowInfo(data, history) {
       }
     }
   })
-  // document.body.appendChild(toastDom.$el)
-  document.getElementById('windowInfo').innerHTML = "";
-  document.getElementById('windowInfo').appendChild(infoDom.$el);
+  if (document.getElementById('windowInfo')) {
+    document.getElementById('windowInfo').innerHTML = "";
+    document.getElementById('windowInfo').appendChild(infoDom.$el);
+  }  
 }
 
 function registryWindowInfo (){

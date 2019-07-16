@@ -7,8 +7,11 @@
     @on-visible-change="changeState"
   >
       <Form :model="modalForm" :label-width="80" ref="modalForm" :rules="ruleValidate" @keydown.enter.native="handleSubmit">
-        <FormItem label="名称" prop="name">
-            <Input v-model="modalForm.name" placeholder="输入名称"></Input>
+        <FormItem label="昵称" prop="name">
+            <Input v-model="modalForm.name" placeholder="输入昵称"></Input>
+        </FormItem>
+        <FormItem label="真实姓名" prop="real_name">
+            <Input v-model="modalForm.real_name" placeholder="输入真实姓名"></Input>
         </FormItem>
         <FormItem label="密码" prop="password">
             <Input v-model="modalForm.password" placeholder="输入密码"></Input>
@@ -61,6 +64,7 @@ export default {
     return {
       modalForm: {
         name: '',
+        real_name: '',
         password: '',
         phone: '',
         company_id: '',
@@ -69,7 +73,10 @@ export default {
       },
       ruleValidate: {
         name: [
-          { required: true, message: '名称不能为空', trigger: 'blur' }
+          { required: true, message: '昵称不能为空', trigger: 'blur' }
+        ],
+        real_name: [
+          { required: true, message: '真实姓名不能为空', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },

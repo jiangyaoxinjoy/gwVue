@@ -1,16 +1,28 @@
 <template>
-  <div v-if="mapshow">
-    <div 
+  <div class="monitoring_map">
+    <baidu-map 
+      class="bm-view" 
+      ak="QPPRPzUYlpEqGNkyylz2OuTBQCeWVHAd"
+      :style="{height: mapHeight +'px'}"
+      :center="curMarker"
+      :zoom="zoom"
+      @ready="handler">
+    </baidu-map>
+    <!-- <div 
       id="monitoringMap" 
       class="monitoringMap" 
-      :style="{height: mapHeight +'px'}"></div>
+      :style="{height: mapHeight +'px'}"></div> -->
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 export default {
   name: "Map",
+  components: {
+    BaiduMap
+  },
   data() {
     return {
       zoom: 16,
@@ -49,9 +61,17 @@ export default {
   },
   methods: {
     ...mapActions(['getDeviceAlertInfo']),
+    handler ({BMap, map}) {
+      // console.log(BMap, map)
+      this.map = map
+      this.BMap = BMap
+      var point = new BMap.Point(116.404, 39.915); 
+      map.centerAndZoom(point, this.zoom);                 
+      map.enableScrollWheelZoom();    
+    },
     setMarker() {
       if( !this.map) return
-      console.log(this.map)
+      // console.log(this.map)
       var map = this.map
       this.removeMarkerEvent()
       var point = new BMap.Point(this.curMarker.lng, this.curMarker.lat)
@@ -96,26 +116,26 @@ export default {
       var map = this.map
       var allOverlay = map.getOverlays();
       for(var i = 0;i<allOverlay.length;i++) {
-        console.log('removeMarkerEvent')       
+        // console.log('removeMarkerEvent')       
         allOverlay[i].removeEventListener("click", this.markerWindow);
         map.removeOverlay(allOverlay[i]);
       }
     }
   },
-  beforeDestory () {
-    this.$store.commit('setCurMarker', { lat: 0, lng: 0 ,device_id: 0})
-    console.log('beforedestorye')
-    this.mapshow = false
-    this.removeMarkerEvent()
-    this.map = null
-  },
-  destroyed() {
-    console.log('destorye')
-  }
+  // beforeDestory () {
+  //   this.$store.commit('setCurMarker', { lat: 0, lng: 0 ,device_id: 0})
+  //   console.log('beforedestorye')
+  //   this.mapshow = false
+  //   this.removeMarkerEvent()
+  //   this.map = null
+  // },
+  // destroyed() {
+  //   console.log('destorye')
+  // }
 }
 </script>
 <style type="text/css">
-  #monitoringMap .ivu-card-bordered {
+  .monitoring_map .ivu-card-bordered {
     min-height: 490px;
   }
 </style>

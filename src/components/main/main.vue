@@ -1,12 +1,9 @@
 <template>
   <Layout style="height: 100%" class="main">
     <Menu mode="horizontal" :theme="theme1" :active-name="activeName" class="mainNav">
-      <router-link to="/" class="logo">
+      <div class="logo" @click="goIndex">
         <img src="@/assets/images/logo.png">
-      </router-link>
-      <!-- <MenuItem to='/' class="logo">
-          <img :src="logo">
-      </MenuItem> -->
+      </div>
       <div class="wrapper-header-nav-list">
         <MenuItem to='/' name="alarm_monitoring">
             <Icon type="ios-paper" />
@@ -41,10 +38,11 @@
     <Layout>
       <Content class="main-content-con">
         <router-view></router-view>
-        <!-- <keep-alive>
-          <router-view v-if="$route.meta.keepAlive"></router-view>
+         <keep-alive>
+          <!-- <router-view></router-view> -->
+         <!--  <router-view v-if="$route.meta.keepAlive"></router-view> -->
         </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive"></router-view>-->
+        <!-- <router-view v-if="!$route.meta.keepAlive"></router-view> -->
       </Content>
     </Layout>
   </Layout>
@@ -97,6 +95,11 @@ export default {
   methods:{
     menuList(){  // 这个方法里定义好，高亮和路由
      this.activeName= this.$route.matched[1].name
+    },
+    goIndex() {
+      // this.$router.go(0)
+      // this.$router.push({ path: '/' })
+      // this.menuList()
     }
   },    
   mounted() {

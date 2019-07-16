@@ -11,10 +11,11 @@
     :style="{'height':mapHeight+'px'}"
     :scroll-wheel-zoom="true"
     @moveend="mapMoveend"
+    :autoPan="false"
   >
-    <p>
-      <router-link :to="{ name: 'statusData'}">
-        <Button type="text" icon="ios-arrow-back">返回</Button>
+    <p class="mapHeader">
+      <router-link to="data">
+        <Button type="text" icon="ios-arrow-back" to="data">返回</Button>
       </router-link>
       <Button type="text" icon="md-share-alt" @click="resetMap">恢复视图</Button>
     </p>
@@ -175,7 +176,8 @@ export default {
         this.flag = false
       })
     },
-    mapMoveend () {
+    mapMoveend (e) {
+      console.log(e)
       if (!this.flag) {
         this.flag = true
         this.addMarker()
@@ -197,5 +199,9 @@ export default {
       vertical-align: middle;
       margin-left: 10px;
     }
+  }
+  .mapHeader{
+    display: flex;
+    flex-direction:row-reverse;
   }
 </style>

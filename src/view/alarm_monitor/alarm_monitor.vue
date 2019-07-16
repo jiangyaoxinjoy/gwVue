@@ -13,8 +13,8 @@
 
 <script>
 import IndexTable from '@/view/alarm_monitor/components/table/index'
-import Map from '@/view/alarm_monitor/components/map.vue'
-
+// import Map from '@/view/alarm_monitor/components/map.vue'
+import Map from '@/view/alarm_monitor/components/newMap.vue'
 export default {
   name: 'home',
   components: {

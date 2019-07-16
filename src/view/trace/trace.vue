@@ -2,7 +2,7 @@
   <Layout>
     <Sider hide-trigger width="250">
       <Form label-position="top" class="sider_form">
-        <FormItem label="项目名称">
+        <!-- <FormItem label="项目名称">
           <Select
             v-model="alarmParams.companyId"
             class="search-col"
@@ -16,6 +16,13 @@
               :key="item.Id"
             >{{ item.name }}</Option>
           </Select>
+        </FormItem> -->
+        <FormItem label="选择公司">
+          <Companyselect
+          :companyList="companyList"
+          :selectCompany="alarmParams.companyId"
+          :width="250"
+          @changeComId="comChange"/>
         </FormItem>
         <FormItem label="告警状态" class="status_search">
           <RadioGroup v-model="alarmParams.alertState" type="button" @on-change="alarmStateChange">
@@ -34,7 +41,7 @@
           />
         </FormItem>
         <FormItem label="日期范围" class="data_search">
-          <DatePicker type="daterange" split-panels placeholder="选择日期" v-model='alarmParams.dataPicker'></DatePicker>
+          <DatePicker type="daterange" @on-clear="claerDate" split-panels placeholder="选择日期" v-model='alarmParams.dataPicker'></DatePicker>
         </FormItem>
         <FormItem class="form_search">
           <Button @click="handleSearch" size="large" class="search-btn" type="warning"><Icon type="search"/>查询</Button>
@@ -44,11 +51,11 @@
         </FormItem>
         <FormItem class="export_wrap">
           <form id="upload" :action="url+'exportAlertTrace'" method="post">
-            <input type="text" hidden="" name="token" :value="token">
-            <input type="text" hidden="" name="addkeys" :value="alarmParams.addkeys">
-            <input type="text" hidden="" name="alertState" :value="alarmParams.alertState">
-            <input type="text" hidden="" name="companyId" :value="alarmParams.companyId">
-            <input type="text" hidden="" name="dataPicker" :value="alarmParams.dataPicker">
+            <input autocomplete="off" type="text" hidden="" name="token" :value="token">
+            <input autocomplete="off" type="text" hidden="" name="addkeys" :value="alarmParams.addkeys">
+            <input autocomplete="off" type="text" hidden="" name="alertState" :value="alarmParams.alertState">
+            <input autocomplete="off" type="text" hidden="" name="companyId" :value="alarmParams.companyId">
+            <input autocomplete="off" type="text" hidden="" name="dataPicker" :value="alarmParams.dataPicker">
             <Button type="primary" html-type="submit" class="exportBtn" size="large"><Icon type="ios-download-outline"></Icon>导出到Excel</Button>
           </form>
         </FormItem>
@@ -75,10 +82,11 @@
 import { RiQiYear } from '@/libs/util'
 import modal from './components/modal/modal.vue'
 import { mapActions, mapState } from 'vuex'
-
+import { Companyselect } from '_c/input/index'
 export default {
   components: {
-    modal
+    modal,
+    Companyselect
   },
   data () {
     return {
@@ -230,13 +238,62 @@ export default {
       if (this.comId !== 1) {
         this.alarmParams.companyId = this.comId
       }
-      this.getAlertData()
+      this.$nextTick( () =>{
+        this.getAlertData()
+      })
+    },
+    changePage (val) {
+      this.alarmParams.pageNum = val
+      this.$nextTick( () =>{
+        this.getAlertData()
+      })
+    },
+    //地址清空
+    handleClear (e) {
+      // console.log(e.target.value)
+      if (e.target.value === '') {
+        this.queryData()
+      }
+    },
+    //查询按钮
+    handleSearch () {
+      this.queryData()
+    },
+    show (row) {
+      this.modalDeviceId = row.device_id
+      this.modalShow = true
+    },
+    comChange () {
+      this.queryData()
+    },
+    
+    alarmStateChange () {
+      this.queryData()
+    },
+    handleReset () {
+      this.alarmParams.addkeys = ''
+      this.alarmParams.alertState = 0
+      if (this.comId !== 1) {
+        this.alarmParams.companyId = this.comId
+      } else {
+        this.alarmParams.companyId = 0
+      }
+      this.alarmParams.dataPicker = ['', '']
+      this.alarmParams.pageNum = 1
+      this.$nextTick( () =>{
+        this.getAlertData()
+      })
+    },
+    //日期清空
+    claerDate(e) {
+      this.queryData()
     },
     /**
      * [getAlertData 根据参数获取页面数据]
      * @return {[type]} [description]
      */
     getAlertData () {
+      this.loading = true
       var payload = JSON.parse(JSON.stringify(this.alarmParams))
       payload.offset = (Number(payload.pageNum) - 1) * Number(payload.limit)
       if (payload.dataPicker[0] !== '' && payload.dataPicker[1] !== '') {
@@ -256,61 +313,12 @@ export default {
         this.loading = false
       })
     },
-    changePage (val) {
-      this.loading = true
-      this.alarmParams.pageNum = val
-      this.getAlertData()
-    },
-    exportData (type) {
-      if (type === 1) {
-        this.$refs.table.exportCsv({
-          filename: 'The original data'
-        })
-      }
-    },
-    handleClear (e) {
-      console.log(e.target.value)
-      if (e.target.value === '') {
-        this.loading = true
-        this.getAlertData()
-      }
-    },
-    handleSearch () {
-      this.loading = true
-      this.getAlertData()
-    },
-    show (row) {
-      this.modalDeviceId = row.device_id
-      this.modalShow = true
-    },
-    comChange () {
-      this.loading = true
-      this.getAlertData()
-    },
-    alarmStateChange () {
-      this.loading = true
-      this.getAlertData()
-    },
-    handleReset () {
-      this.alarmParams.addkeys = ''
-      this.alarmParams.alertState = 0
-      if (this.comId !== 1) {
-        this.alarmParams.companyId = this.comId
-      } else {
-        this.alarmParams.companyId = 0
-      }
-      this.alarmParams.dataPicker = ['', '']
+    queryData () {
       this.alarmParams.pageNum = 1
-      this.getAlertData()
+      this.$nextTick( () =>{
+        this.getAlertData()
+      })
     },
-    submitForm () {
-      // return false;
-      $("#upload").ajaxSubmit(function(message) {
-        // 对于表单提交成功后处理，message为表单正常提交后返回的内容
-        console.log(message);
-      });
-      return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转
-    }
   }
 }
 </script>

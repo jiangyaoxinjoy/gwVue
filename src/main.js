@@ -12,12 +12,12 @@ import { directive as clickOutside } from 'v-click-outside-x'
 import installPlugin from '@/plugin'
 import '@/assets/css/my-theme/index.less'
 import '@/assets/icons/iconfont.css'
-import TreeTable from 'tree-table-vue'
-import VOrgTree from 'v-org-tree'
+// import TreeTable from 'tree-table-vue'
+// import VOrgTree from 'v-org-tree'
 import 'v-org-tree/dist/v-org-tree.css'
 // import BaiduMap from 'vue-baidu-map'
-import vuescroll from 'vuescroll/dist/vuescroll-native'
-import 'vuescroll/dist/vuescroll.css'
+// import vuescroll from 'vuescroll/dist/vuescroll-native'
+// import 'vuescroll/dist/vuescroll.css'
 import filter from '@/libs/filter.js'
 
 import registryWindowInfo from '_c/windowInfo/index.js'
@@ -25,7 +25,7 @@ Vue.use(registryWindowInfo)
 // import mapInfo from '@/view/show/components/windowInfo/info.vue'
 // var MyComponent = Vue.extend(mapInfo)
 
-Vue.use(vuescroll)
+// Vue.use(vuescroll)
 // 实际打包时应该不引入mock
 /* eslint-disable */
 // if (process.env.NODE_ENV !== 'production') require('@/mock')
@@ -39,8 +39,8 @@ Vue.use(iView)
 // Vue.use(iView, {
 //   i18n: (key, value) => i18n.t(key, value)
 // })
-Vue.use(TreeTable)
-Vue.use(VOrgTree)
+// Vue.use(TreeTable)
+// Vue.use(VOrgTree)
 /**
  * @description 注册admin内置插件
  */

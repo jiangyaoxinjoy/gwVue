@@ -140,11 +140,6 @@ export default {
       this.setDeviceParams(this.deviceParams)
     },
     setDeviceList () {
-      var payload = JSON.parse(JSON.stringify(this.deviceParams))
-      payload.offset = (Number(payload.pageNum) - 1) * Number(payload.limit)
-      if (this.comId !== 1) {
-        payload.companyId = this.comId
-      }
       this.deviceList(this.deviceParams).then(res => {
         this.deviceData = res.data.list === null ? [] : res.data.list
         this.dataTotal = res.data.count

@@ -188,7 +188,7 @@ export default {
     // },
     initPressureData () {
       getDevicePressurehistory({ 'device_id': this.deviceId, 'selectTime': this.selectTime,'token': this.token }).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         var data = res.data.data
         this.lineData = {}
         if (data.list != null) {
@@ -204,7 +204,7 @@ export default {
     },
     initOpenData () {
       getDeviceOpenhistory({ 'device_id': this.deviceId, 'token': this.token }).then(res => {
-        console.log(res.data.data)
+        // console.log(res.data.data)
         var data = res.data.data
         if (data != null) {
           this.openTableData = data

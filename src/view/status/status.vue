@@ -17,14 +17,27 @@
         </FormItem>
         <FormItem label="地址" class="addressSearch">
           <Input
+            @on-change="handleClear"
             placeholder="输入关键字搜索"
             class="search-input"
-            v-model="deviceParams.addkeys"
             @on-search="handleSearch"
+            enter-button="搜索"
             search
             clearable
             @keydown.enter.native.prevent="handleSearch"/>
           </FormItem>
+        <!-- <FormItem label="地址">
+          <Input
+            @on-change="handleClear"
+            clearable
+            placeholder="输入关键字搜索"
+            class="search-input"
+            v-model="deviceParams.addkeys"
+          />
+        </FormItem> -->
+       <!--  <FormItem class="form_search">
+          <Button @click="handleSearch" size="large" class="search-btn" type="warning"><Icon type="search"/>查询</Button>
+        </FormItem> -->
         <FormItem class="exportBtn">
           <Button type="info" class="" @click="resetForm">重置</Button>
         </FormItem>
@@ -69,6 +82,17 @@ export default {
       'deviceParams'
     ])
   },
+  beforeCreate() {
+   var deviceStatusParams = {
+      companyId: 0,
+      online_state: 0,
+      addkeys: '',
+      pageNum: 1,
+      limit: 100
+    }
+    deviceStatusParams.companyId = this.$store.state.user.comId === 1 ? deviceStatusParams.companyId : this.$store.state.user.comId
+    this.$store.commit('setDeviceParams',deviceStatusParams)
+  },
   created () {
     if (this.companyList.length === 0) {
       this.getCompanyList()
@@ -78,23 +102,27 @@ export default {
     ...mapActions(['getCompanyList', 'deviceList', 'exportDeviceList']),
     ...mapMutations(['setDeviceParams']),
     queryData () {
-      console.log('123')
       this.deviceParams.pageNum = 1
       this.setDeviceParams(this.deviceParams)
     },
+    //公司
     comChange (val) {
       this.deviceParams.companyId = val
       this.queryData()
     },
+    //报警终端状态
     onlineChange () {
       this.queryData()
     },
-    handleSearch () {
+    //查询按钮
+    handleSearch (e) {
+      this.deviceParams.addkeys = e
       this.queryData()
     },
     setMapHide () {
       this.showMap = false
     },
+    //重置
     resetForm () {
       if (this.comId !== 1) {
         this.deviceParams.companyId = this.comId
@@ -105,7 +133,14 @@ export default {
       this.deviceParams.addkeys = ''
       this.deviceParams.pageNum = 1
       this.queryData()
-    }
+    },
+    //地址清空
+    handleClear (e) {
+      if (e.target.value === '') {
+        this.deviceParams.addkeys = ''
+        this.queryData()
+      }
+    },
   }
 }
 </script>
@@ -170,5 +205,11 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
+}
+.form_search button{
+  width: 100%;
+}
+.addressSearch .ivu-input-icon-clear{
+  right: 50px;
 }
 </style>

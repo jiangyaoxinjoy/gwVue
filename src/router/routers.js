@@ -66,7 +66,7 @@ export default [
             name: 'statusData',
             meta: {
               title: '设备状态-数据列表',
-              keepAlive: true
+              // keepAlive: true
             },
             component: () => import('@/view/status/components/dataContent.vue')
           },

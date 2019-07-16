@@ -9,6 +9,12 @@
     <Form :model="formItem" ref="formItem" :rules="ruleCustom"  :label-width="80">
       <input type="text" name="a" style="display: none"/>
       <input type="password" name="b" style="display: none"/>
+      <!-- <FormItem>      
+        <Input autocomplete="off" style="display: none" clearable type="text" v-model="formItem.a" placeholder="输入原始密码..."></Input>
+      </FormItem>
+      <FormItem>      
+        <Input autocomplete="off" style="display: none" clearable type="password" v-model="formItem.b" placeholder="输入原始密码..."></Input>
+      </FormItem> -->
       <FormItem label="原始密码" prop="originPwd">      
         <Input autocomplete="off" clearable type="password" v-model="formItem.originPwd" placeholder="输入原始密码..."></Input>
       </FormItem>
@@ -70,7 +76,9 @@ export default {
       formItem: {
         originPwd: '',
         newPwd: '',
-        againPwd: ''
+        againPwd: '',
+        a:'',
+        b:''
       },
       ruleCustom: {
         originPwd: [
@@ -93,7 +101,12 @@ export default {
     handleSubmit (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          var payload = JSON.parse(JSON.stringify(this.formItem))
+          var data = {}
+          data.originPwd = this.formItem.originPwd
+          data.newPwd = this.formItem.newPwd
+          data.againPwd = this.formItem.againPwd
+          // {data.originPwd,data.newPwd,data.againPwd} = {...this.formItem}
+          var payload = JSON.parse(JSON.stringify(data))
           payload.userId = this.$store.state.user.userId
           this.changePsd(payload).then(res => {
             if (res.status === 0) {

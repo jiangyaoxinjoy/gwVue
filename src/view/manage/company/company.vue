@@ -213,7 +213,7 @@ export default {
             let payload = JSON.parse(JSON.stringify(this.modalForm))
             payload.id = this.curId
             this.editCom(payload).then(res => {
-              console.log(res)
+              // console.log(res)
               if (res.status !== 0) {
                 this.$Message.error(res.msg)
               } else {

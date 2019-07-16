@@ -18,7 +18,7 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://192.168.1.41:8087/',
+    dev: 'http://192.168.1.34:8087/',
     // dev: 'https://www.easy-mock.com/mock/5add9213ce4d0e69998a6f51/iview-admin/',
     // pro: 'https://produce.com'
     pro: '/'

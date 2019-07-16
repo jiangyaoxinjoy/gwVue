@@ -63,7 +63,7 @@ export default {
     getData () {
       getUserNotifyHistory({'device_id': this.userAllNotify.device_id, 'user_id': this.userAllNotify.user_id, 'token': this.token })
       .then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.data.status === 0) {
           this.notifyData.list = res.data.data
           this.loading = false

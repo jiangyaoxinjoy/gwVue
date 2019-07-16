@@ -277,7 +277,7 @@ export default {
       if (this.unalertDeviceList.length === 0) return
       var map = this.map
       this.unalertDeviceList.forEach( (val,key) => {
-        console.log(val)
+        // console.log(val)
         var point = new BMap.Point(val.lng, val.lat)
         var marker = new BMap.Marker(point)
         map.addOverlay(marker)
@@ -340,12 +340,12 @@ export default {
       // this.addClickHandlerProduct()
     },
     addClickHandlerProduct (center,device) {
-      console.log(center.lng)
+      // console.log(center.lng)
       this.chooseAlert.lng = center.lng
       this.chooseAlert.lat = center.lat
       this.chooseAlert.device_id = device
       this.markerWindow()
-      console.log(this)
+      // console.log(this)
     },
     // setMarker () {
     //   var map = this.map
@@ -368,7 +368,7 @@ export default {
     //   map.setViewport(points)
     // },
     openWindow (e) {
-      console.log(e)
+      // console.log(e)
       this.chooseAlert = e.getMsg()    
       this.markerWindow()
     },
@@ -381,7 +381,7 @@ export default {
           marker.removeEventListener("click", () => {
             this.openWindow(marker)
           });
-          console.log('removeMarkerEvent') 
+          // console.log('removeMarkerEvent') 
           map.removeOverlay(marker);
         }
       }
@@ -408,7 +408,7 @@ export default {
         </div>`;
       var infoWindow = new BMap.InfoWindow(sContent,opts);
       this.infoWindow = infoWindow
-      console.log(infoWindow)
+      // console.log(infoWindow)
       map.openInfoWindow(infoWindow,point)
       this.getShowAlertInfo({ "device_id": this.chooseAlert["device_id"]})
       .then( res => {
@@ -424,7 +424,7 @@ export default {
           color = "#0DF50D"
           break;
         case '20':
-          color = "#619DDF"
+          color = "#2d8cf0"
           break;
         case '30':
           color = "#FFD100"
@@ -440,12 +440,12 @@ export default {
     },
     openAlarm (index) {
       this.chooseAlert = this.alarmData[index]
-      console.log(this.chooseAlert)
+      // console.log(this.chooseAlert)
       this.markerWindow()
       // this.chooseAlertList = [this.chooseAlert]
     },
     changLoginOutState (val) {
-      console.log(val)
+      // console.log(val)
       this.ifLoginOut = val
     },
     comChange (val) {
@@ -537,7 +537,7 @@ export default {
     // this.getUnalertDevice()
     map.addEventListener("zoomend", (e) => {
       var ZoomNum = map.getZoom();
-      console.log(ZoomNum)
+      // console.log(ZoomNum)
       if(ZoomNum > 15) {
         this.canGetUnalertDevice = true
       } else {
@@ -545,7 +545,7 @@ export default {
       }
     });
     map.addEventListener("dragend", (e) => {
-      console.log(this.canGetUnalertDevice)
+      // console.log(this.canGetUnalertDevice)
       if (this.unalertDeviceFlag) {
         return
       }
@@ -554,7 +554,9 @@ export default {
       }
     })
     map.addEventListener("tilesloaded", () => {
-      this.loading = false
+      setTimeout( () => {
+        this.loading = false
+      },1000)
     });
   }
 }
